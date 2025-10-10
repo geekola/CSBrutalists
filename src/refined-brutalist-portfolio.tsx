@@ -115,11 +115,11 @@ const Portfolio = () => {
                 {heroImages[currentHeroImage]}
               </div>
                <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
-              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '3rem' }}>
+              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem' }}>
                 ({getCurrentDate()})
               </div>
               
-              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '3rem', textAlign: 'right' }}>
+              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem', textAlign: 'right' }}>
                 HOME &gt; PORTFOLIO &gt; RESUME &gt; ABOUT &gt; CONTACT
               </div>
             </div>
