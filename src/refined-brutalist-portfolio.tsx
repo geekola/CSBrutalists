@@ -106,11 +106,7 @@ const Portfolio = () => {
       <main style={{ paddingTop: '73px' }}>
         {activeSection === 'home' && (
           <section>
-            <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
-              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem', textAlign: 'right' }}>
-                HOME &gt; PORTFOLIO &gt; RESUME &gt; ABOUT &gt; CONTACT
-              </div>
-            </div>
+           
             <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
               <div style={{
                 aspectRatio: '16/9', backgroundColor: currentTheme.secondary, marginBottom: '1rem',
@@ -118,10 +114,15 @@ const Portfolio = () => {
               }}>
                 {heroImages[currentHeroImage]}
               </div>
+               <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
               <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '3rem' }}>
                 ({getCurrentDate()})
               </div>
               
+              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '3rem', textAlign: 'right' }}>
+                HOME &gt; PORTFOLIO &gt; RESUME &gt; ABOUT &gt; CONTACT
+              </div>
+            </div>
               <div style={{ marginBottom: '3rem' }}>
                 {['HOME', 'PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
                   <button
@@ -314,7 +315,7 @@ const Portfolio = () => {
         borderTop: `1px solid ${currentTheme.secondary}`, padding: '2rem 3rem', textAlign: 'center',
         fontSize: '0.75rem', color: currentTheme.textSecondary, fontFamily: 'Courier, monospace'
       }}>
-        © 2024 CS BRUTALISTS. ALL RIGHTS RESERVED.
+        © 2025 CS BRUTALISTS. ALL RIGHTS RESERVED.
       </footer>
     </div>
   );
