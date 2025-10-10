@@ -105,11 +105,13 @@ const Portfolio = () => {
 
       <main style={{ paddingTop: '73px' }}>
         {activeSection === 'home' && (
-          <section style={{ padding: '3rem' }}>
-            <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem' }}>
+          <section>
+            <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
+              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem', textAlign: 'right' }}>
                 HOME &gt; PORTFOLIO &gt; RESUME &gt; ABOUT &gt; CONTACT
               </div>
+            </div>
+            <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
               <div style={{
                 aspectRatio: '16/9', backgroundColor: currentTheme.secondary, marginBottom: '1rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem'
