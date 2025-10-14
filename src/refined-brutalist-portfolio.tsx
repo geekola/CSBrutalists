@@ -210,8 +210,8 @@ const Portfolio = () => {
                   📷
                 </div>
                 <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8' }}>
-                  <h3>EXECUTIVE SUMMARY</h3>
-                  <p>Professional summary content...</p>
+                  <h3>EXECUTIVE SUMMARY | INNOVATION LEADER</h3>
+                  <p>Entrepreneurial leader leveraging over two decades of success in Brand Management, Business Development, and Media to pioneer the next generation of audience engagement through Augmented Reality (AR) SaaS and AI driven strategy. Proven expertise in developing and executing integrated brand strategies, fostering audience loyalty, and identifying new revenue opportunities to drive business growth. My experience is rooted in creating tangible, high impact moments, including directing all IP content and fan engagement at major live events, such as the X-Games, the US Open of Surf, and the launch of Cross Colours - Music Without Prejudice.</p>
                   <h3>EXPERIENCE</h3>
                   <p>Job details...</p>
                   <button style={{
