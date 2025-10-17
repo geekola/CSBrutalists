@@ -215,7 +215,19 @@ const Portfolio = () => {
                   <h3>CORE COMPETENCIES</h3>
                   <p>AR/AI Product Development | Integrated Brand Strategy | Digital Paid Media (Google/Meta) | Cross-Functional Leadership | B2B Client Acquisition | Revenue Stream Identification | Creative Concept Direction | Agency & Vendor Coordination</p>
                   <h3>PROFESSIONAL EXPERIENCE</h3>
-                  <p><strong>C Scott Consulting Group</strong> - Freelance Brand Strategist | Los Angeles, CA</p>
+                  <h4><strong>C Scott Consulting Group</strong> - Freelance Brand Strategist | Los Angeles, CA</h4>
+                  <p>Jan 2010–Present</p>
+                  <ul><li>Innovation & Product Development: Conceptualized, directed, and led a new venture to develop a novel Augmented
+Reality (AR) SaaS product by assembling a cross-industry team of experts in sports, media, and AI for a Q1 2026 launch.</li>
+<li>Technology Leadership: Actively utilize AI as a daily efficiency tool for high-speed data analysis and advanced creative
+brainstorming, driving down time-to-market for strategic initiatives.</li>
+<li>Championed integrated brand strategies by mobilizing cross-functional teams, aligning brand messaging with business
+objectives to drive growth and customer loyalty.</li>
+<li>Secured and retained strategic client partnerships from inception to completion, consistently exceeding expectations and
+strengthening business alignment.</li>
+<li>Drove business development by conducting comprehensive brand audits and market research to inform strategic
+positioning, using analytics and performance metrics to identify new revenue streams.</li>
+                  </ul>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
                     border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
