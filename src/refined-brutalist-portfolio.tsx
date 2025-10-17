@@ -200,7 +200,7 @@ const Portfolio = () => {
         )}
 
         {activeSection === 'resume' && (
-          <section style={{ padding: '3rem' }}>
+          <section style={{ padding: '3rem', paddingBottom: '6rem' }}>
             <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
               <h2 style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', fontWeight: '900', color: currentTheme.accent, margin: '0 0 3rem 0', fontFamily: 'Roboto, sans-serif' }}>
                 RESUME
