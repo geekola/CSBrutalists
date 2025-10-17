@@ -223,7 +223,7 @@ const Portfolio = () => {
                     <li style={{ marginBottom: '0.5rem' }}>Secured and retained strategic client partnerships from inception to completion, consistently exceeding expectations and strengthening business alignment.</li>
                     <li style={{ marginBottom: '0.5rem' }}>Drove business development by conducting comprehensive brand audits and market research to inform strategic positioning, using analytics and performance metrics to identify new revenue streams.</li>
                   </ul>
-                  <h3>GreenLabTV - Producer/Business Development | Los Angeles, CA</h3>
+                  <h4>GreenLabTV - Producer/Business Development | Los Angeles, CA</h4>
                   <p>Oct 2024–Present</p>
 <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
                     <li style={{ marginBottom: '0.5rem' }}>Served as a key liaison for production goals, ensuring brand and audience alignment with the client's creative vision.</li>
