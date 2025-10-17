@@ -238,6 +238,17 @@ const Portfolio = () => {
 <li style={{ marginBottom: '0.5rem' }}>B2B & Agency Coordination: Developed B2B-focused marketing materials and presentations to secure business partnerships, and managed projects coordinating with multiple third-party agencies (PR, Media Buying, Creatives).</li>
 <li style={{ marginBottom: '0.5rem' }}>Managed project budgets to ensure financial viability and profitability, implementing cost-saving measures to optimize resource allocation.</li>
                     </ul>
+
+<h4 style={{ marginBottom: '0.5rem' }}>All Action Sports Radio - Producer/Brand Manager | Los Angeles, CA</h4>
+                 <p style={{ marginBottom: '1rem' }}> Feb 2010–Jan 2014</p>
+<ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
+                    <li style={{ marginBottom: '0.5rem' }}>Led the launch and growth of a start-up radio show from concept to syndication, demonstrating strong entrepreneurial acumen.</li>
+                  <li style={{ marginBottom: '0.5rem' }}>Developed and implemented a comprehensive brand strategy that successfully positioned the brand and secured a syndication deal.</li>
+                  <li style={{ marginBottom: '0.5rem' }}>Digital Marketing & Paid Media: Successfully managed digital ad budgets on platforms including Google Ads and Facebook/Meta to drive brand awareness.</li>
+<li style={{ marginBottom: '0.5rem' }}>SEO/Email Marketing: Implemented strategies to improve search ranking and managed keywords for search ads; utilized Mailchimp to develop and maintain audience communication and loyalty.</li>
+                  <li style={{ marginBottom: '0.5rem' }}>Grew the audience through compelling content and interactive experiences via social media and live events, deepening industry relationships.</li>
+<li style={{ marginBottom: '0.5rem' }}>Maintained adherence to project schedules and budget constraints through KPI analysis.</li>
+                </ul>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
                     border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
