@@ -264,12 +264,12 @@ const Portfolio = () => {
                     <li style={{ marginBottom: '0.5rem' }}>Translated client vision into tangible workflow for development projects.</li>
 </ul>
                   <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>TECHNICAL & PLATFORM SKILLS</h3>
-<p>Analytics & CRM: Mailchimp, KPI Analysis, Performance Metrics</p>
+<p style={{ marginBottom: '1rem' }}>Analytics & CRM: Mailchimp, KPI Analysis, Performance Metrics</p>
 <p>Creative Suite: Adobe Creative Suite, Da Vinci Editing Suite</p>
 <p>Productivity: Trello & Slack, Microsoft Office, Windows & Mac</p>
 <p>Design/Other: AutoCAD, AR/AI Conceptualization Tools</p>
 <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>EDUCATION</h3>
-<p>Wilmington University</p>
+<p style={{ marginBottom: '1rem' }}>Wilmington University</p>
 <p>Sept. 1998–Dec 2002</p>
 <p>Bachelor of Science, Business Management</p>
                   <button style={{
