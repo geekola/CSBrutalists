@@ -224,14 +224,14 @@ const Portfolio = () => {
                     <li style={{ marginBottom: '0.5rem' }}>Drove business development by conducting comprehensive brand audits and market research to inform strategic positioning, using analytics and performance metrics to identify new revenue streams.</li>
                   </ul>
                   <h4>GreenLabTV - Producer/Business Development | Los Angeles, CA</h4>
-                  <p>Oct 2024–Present</p>
+                  <p style={{ marginBottom: '1rem' }}>Oct 2024–Present</p>
 <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
                     <li style={{ marginBottom: '0.5rem' }}>Served as a key liaison for production goals, ensuring brand and audience alignment with the client's creative vision.</li>
  <li style={{ marginBottom: '0.5rem' }}>Drove operational efficiency and profitability by securing and managing critical vendor relationships and key production logistics, maintaining strict adherence to project budgets.</li>
  <li style={{ marginBottom: '0.5rem' }}>Cultivated and maintained strong relationships through proactive communication with high-profile talent and VIP clients, leveraging these connections to enhance the brand's reputation and reach.</li>
 </ul>
                   <h4>Cross Colours - Music Without Prejudice - Creative Consultant | Venice, CA</h4>
-                    <p>Sep 2014–May 2015</p>
+                    <p style={{ marginBottom: '1rem' }}>Sep 2014–May 2015</p>
 <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
                     <li style={{ marginBottom: '0.5rem' }}>Developed and executed immersive brand experiences and high-impact events.</li>
 <li style={{ marginBottom: '0.5rem' }}>Created and executed a range of events, including brand activations and product launches, to foster engagement and create memorable experiences for fans.</li>
