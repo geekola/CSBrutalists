@@ -256,6 +256,13 @@ const Portfolio = () => {
 <li style={{ marginBottom: '0.5rem' }}>Drove operational efficiency by securing and managing critical vendor relationships and key production logistics, maintaining profitability across project budgets.</li>
 <li style={{ marginBottom: '0.5rem' }}>Vendor Management: Managed procurement, change orders, and price negotiations, adhering to project timeline and budget</li>
   </ul>
+                  <h4 style={{ marginBottom: '0.5rem' }}>Paradigm Developers - Project Manager | Los Angeles, CA</h4>
+                  <p style={{ marginBottom: '1rem' }}>Jun 2003–Aug 2005</p>
+<ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
+                    <li style={{ marginBottom: '0.5rem' }}>Managed all phases of residential construction projects.</li>
+                    <li style={{ marginBottom: '0.5rem' }}>Coordinated with subcontractors, vendors and local municipalities.</li>
+                    <li style={{ marginBottom: '0.5rem' }}>Translated client vision into tangible workflow for development projects.</li>
+</ul>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
                     border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
