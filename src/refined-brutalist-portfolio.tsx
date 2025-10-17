@@ -240,7 +240,7 @@ const Portfolio = () => {
                     </ul>
 
 <h4 style={{ marginBottom: '0.5rem' }}>All Action Sports Radio - Producer/Brand Manager | Los Angeles, CA</h4>
-                 <p style={{ marginBottom: '1rem' }}> Feb 2010–Jan 2014</p>
+                 <p style={{ marginBottom: '1rem' }}>Feb 2010–Jan 2014</p>
 <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
                     <li style={{ marginBottom: '0.5rem' }}>Led the launch and growth of a start-up radio show from concept to syndication, demonstrating strong entrepreneurial acumen.</li>
                   <li style={{ marginBottom: '0.5rem' }}>Developed and implemented a comprehensive brand strategy that successfully positioned the brand and secured a syndication deal.</li>
@@ -249,6 +249,13 @@ const Portfolio = () => {
                   <li style={{ marginBottom: '0.5rem' }}>Grew the audience through compelling content and interactive experiences via social media and live events, deepening industry relationships.</li>
 <li style={{ marginBottom: '0.5rem' }}>Maintained adherence to project schedules and budget constraints through KPI analysis.</li>
                 </ul>
+                  <h4 style={{ marginBottom: '0.5rem' }}>Corporate Contractors - Project Manager | Los Angeles, CA</h4>
+                    <p style={{ marginBottom: '1rem' }}>Oct 2005–Jan 2010</p>
+<ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
+                    <li style={{ marginBottom: '0.5rem' }}>Directed all phases of commercial construction projects, from conceptualization to completion.</li>
+<li style={{ marginBottom: '0.5rem' }}>Drove operational efficiency by securing and managing critical vendor relationships and key production logistics, maintaining profitability across project budgets.</li>
+<li style={{ marginBottom: '0.5rem' }}>Vendor Management: Managed procurement, change orders, and price negotiations, adhering to project timeline and budget</li>
+  </ul>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
                     border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
