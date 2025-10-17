@@ -212,8 +212,8 @@ const Portfolio = () => {
                 <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8' }}>
                   <h3>EXECUTIVE SUMMARY | INNOVATION LEADER</h3>
                   <p>Entrepreneurial leader leveraging over two decades of success in Brand Management, Business Development, and Media to pioneer the next generation of audience engagement through Augmented Reality (AR) SaaS and AI driven strategy. Proven expertise in developing and executing integrated brand strategies, fostering audience loyalty, and identifying new revenue opportunities to drive business growth. My experience is rooted in creating tangible, high impact moments, including directing all IP content and fan engagement at major live events, such as the X-Games, the US Open of Surf, and the launch of Cross Colours - Music Without Prejudice.</p>
-                  <h3>EXPERIENCE</h3>
-                  <p>Job details...</p>
+                  <h3>CORE COMPETENCIES</h3>
+                  <p>AR/AI Product Development | Integrated Brand Strategy | Digital Paid Media (Google/Meta) | Cross-Functional Leadership | B2B Client Acquisition | Revenue Stream Identification | Creative Concept Direction | Agency & Vendor Coordination</p>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
                     border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
