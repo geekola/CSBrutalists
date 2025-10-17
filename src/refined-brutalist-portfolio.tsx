@@ -230,6 +230,14 @@ const Portfolio = () => {
  <li style={{ marginBottom: '0.5rem' }}>Drove operational efficiency and profitability by securing and managing critical vendor relationships and key production logistics, maintaining strict adherence to project budgets.</li>
  <li style={{ marginBottom: '0.5rem' }}>Cultivated and maintained strong relationships through proactive communication with high-profile talent and VIP clients, leveraging these connections to enhance the brand's reputation and reach.</li>
 </ul>
+                  <h4>Cross Colours - Music Without Prejudice - Creative Consultant | Venice, CA</h4>
+                    <p>Sep 2014–May 2015</p>
+<ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
+                    <li style={{ marginBottom: '0.5rem' }}>Developed and executed immersive brand experiences and high-impact events.</li>
+<li style={{ marginBottom: '0.5rem' }}>Created and executed a range of events, including brand activations and product launches, to foster engagement and create memorable experiences for fans.</li>
+<li style={{ marginBottom: '0.5rem' }}>B2B & Agency Coordination: Developed B2B-focused marketing materials and presentations to secure business partnerships, and managed projects coordinating with multiple third-party agencies (PR, Media Buying, Creatives).</li>
+<li style={{ marginBottom: '0.5rem' }}>Managed project budgets to ensure financial viability and profitability, implementing cost-saving measures to optimize resource allocation.</li>
+                    </ul>
                   <button style={{
                     display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
                     border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
