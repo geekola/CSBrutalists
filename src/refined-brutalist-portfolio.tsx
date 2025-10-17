@@ -264,7 +264,7 @@ const Portfolio = () => {
                     <li style={{ marginBottom: '0.5rem' }}>Translated client vision into tangible workflow for development projects.</li>
 </ul>
                   <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>TECHNICAL & PLATFORM SKILLS</h3>
-<p style={{ marginBottom: '1rem' }}>Analytics & CRM: Mailchimp, KPI Analysis, Performance Metrics</p>
+<p>Analytics & CRM: Mailchimp, KPI Analysis, Performance Metrics</p>
 <p>Creative Suite: Adobe Creative Suite, Da Vinci Editing Suite</p>
 <p>Productivity: Trello & Slack, Microsoft Office, Windows & Mac</p>
  <p style={{ marginBottom: '1rem' }}>Design/Other: AutoCAD, AR/AI Conceptualization Tools</p>
