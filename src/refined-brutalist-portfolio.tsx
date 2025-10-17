@@ -205,7 +205,7 @@ const Portfolio = () => {
               <h2 style={{ fontSize: 'clamp(2.5rem, 8vw, 6rem)', fontWeight: '900', color: currentTheme.accent, margin: '0 0 3rem 0', fontFamily: 'Roboto, sans-serif' }}>
                 RESUME
               </h2>
-              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 2fr', gap: '3rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 3fr', gap: '3rem' }}>
                 <div style={{ aspectRatio: '3/4', backgroundColor: currentTheme.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>
                   📷
                 </div>
