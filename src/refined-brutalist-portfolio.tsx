@@ -29,7 +29,7 @@ const Portfolio = () => {
   const currentTheme = isDark ? theme.dark : theme.light;
 
   const portfolioItems = [
-    { id: 1, title: 'Project Alpha', category: 'Media', year: '2024', image: '📷' },
+    { id: 1, title: 'Project Alpha', category: 'Media', year: '2024', image: '/public/unamed.jpg' },
     { id: 2, title: 'Digital Campaign', category: 'Branding', year: '2024', image: '📷' },
     { id: 3, title: 'Visual Identity', category: 'Branding', year: '2023' },
     { id: 4, title: 'Product Launch', category: 'Live Events', year: '2023' },
