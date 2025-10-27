@@ -29,8 +29,8 @@ const Portfolio = () => {
   const currentTheme = isDark ? theme.dark : theme.light;
 
   const portfolioItems = [
-    { id: 1, title: 'Project Alpha', category: 'Media', year: '2024' },
-    { id: 2, title: 'Digital Campaign', category: 'Branding', year: '2024' },
+    { id: 1, title: 'Project Alpha', category: 'Media', year: '2024', image: '📷' },
+    { id: 2, title: 'Digital Campaign', category: 'Branding', year: '2024', image: '📷' },
     { id: 3, title: 'Visual Identity', category: 'Branding', year: '2023' },
     { id: 4, title: 'Product Launch', category: 'Live Events', year: '2023' },
     { id: 5, title: 'Brand Refresh', category: 'Print', year: '2023' },
@@ -183,7 +183,7 @@ const Portfolio = () => {
                 {portfolioItems.map((item) => (
                   <div key={item.id} style={{ backgroundColor: currentTheme.bg, padding: '3rem', cursor: 'pointer' }}>
                     <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
-                      {item.id}
+                      {item.image || item.id}
                     </div>
                     <h3 style={{ fontSize: '1.75rem', fontWeight: '700', margin: 0, fontFamily: 'Roboto, sans-serif' }}>
                       {item.title}
