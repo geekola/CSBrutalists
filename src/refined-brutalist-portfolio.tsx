@@ -182,8 +182,12 @@ const Portfolio = () => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2px', backgroundColor: currentTheme.secondary }}>
                 {portfolioItems.map((item) => (
                   <div key={item.id} style={{ backgroundColor: currentTheme.bg, padding: '3rem', cursor: 'pointer' }}>
-                    <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem' }}>
-                      {item.image || item.id}
+                    <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', overflow: 'hidden' }}>
+                      {item.image ? (
+                        <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        item.id
+                      )}
                     </div>
                     <h3 style={{ fontSize: '1.75rem', fontWeight: '700', margin: 0, fontFamily: 'Roboto, sans-serif' }}>
                       {item.title}
