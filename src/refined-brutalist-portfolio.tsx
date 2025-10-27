@@ -30,7 +30,7 @@ const Portfolio = () => {
 
   const portfolioItems = [
     { id: 1, title: 'Project Alpha', category: 'Media', year: '2024', image: 'unnamed.jpg' },
-    { id: 2, title: 'Digital Campaign', category: 'Branding', year: '2024', image: '📷' },
+    { id: 2, title: 'Digital Campaign', category: 'Branding', year: '2024', image: 'unnamed2.jpg' },
     { id: 3, title: 'Visual Identity', category: 'Branding', year: '2023' },
     { id: 4, title: 'Product Launch', category: 'Live Events', year: '2023' },
     { id: 5, title: 'Brand Refresh', category: 'Print', year: '2023' },
