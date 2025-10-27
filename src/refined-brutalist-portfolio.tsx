@@ -118,10 +118,6 @@ const Portfolio = () => {
               <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem' }}>
                 ({getCurrentDate()})
               </div>
-              
-              <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', color: currentTheme.textSecondary, marginBottom: '1rem', textAlign: 'right' }}>
-                HOME &gt; PORTFOLIO &gt; RESUME &gt; ABOUT &gt; CONTACT
-              </div>
             </div>
               <div style={{ marginBottom: '3rem' }}>
                 {['HOME', 'PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
