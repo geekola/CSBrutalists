@@ -202,7 +202,8 @@ const Portfolio = () => {
                 RESUME
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 3fr', gap: '3rem' }}>
-                <div style={{ aspectRatio: '1/10', backgroundColor: currentTheme.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
+                <div style={{ aspectRatio: '3/4', backgroundColor: currentTheme.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', overflow: 'hidden' }}>
+                  <img src="/unnamed.jpg" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8' }}>
                   <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>EXECUTIVE SUMMARY | INNOVATION LEADER</h3>
