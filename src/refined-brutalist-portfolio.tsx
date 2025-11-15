@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X, Download } from 'lucide-react';
+import { Sun, Moon, Menu, X, Download, LogOut } from 'lucide-react';
+import { useAuth } from './contexts/AuthContext';
 
 const Portfolio = () => {
+  const { logout, username } = useAuth();
   const [activeSection, setActiveSection] = useState('home');
   const [isDark, setIsDark] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -69,12 +71,31 @@ const Portfolio = () => {
       }}>
         <div style={{ fontSize: '1.25rem', fontWeight: '700', fontFamily: 'Roboto, sans-serif' }}>LOGO</div>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          <div style={{ fontSize: '0.75rem', color: currentTheme.textSecondary, fontFamily: 'Courier, monospace' }}>
+            {username}
+          </div>
           <button onClick={() => setIsDark(!isDark)} style={{
             background: 'none', border: `1px solid ${currentTheme.text}`, borderRadius: '50%',
             width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', color: currentTheme.text
           }}>
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button onClick={logout} style={{
+            background: 'none', border: `1px solid ${currentTheme.text}`, borderRadius: '50%',
+            width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            cursor: 'pointer', color: currentTheme.text, transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            (e.target as HTMLButtonElement).style.backgroundColor = currentTheme.accent;
+            (e.target as HTMLButtonElement).style.color = currentTheme.bg;
+          }}
+          onMouseLeave={(e) => {
+            (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
+            (e.target as HTMLButtonElement).style.color = currentTheme.text;
+          }}
+          title="Logout">
+            <LogOut size={18} />
           </button>
           <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{
             background: 'none', border: 'none', color: currentTheme.text, cursor: 'pointer', padding: 0
