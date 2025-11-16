@@ -1,8 +1,30 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X, Download, LogOut } from 'lucide-react';
+import { Sun, Moon, Menu, X, Download, LogOut, Settings } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
+import { supabase } from './lib/supabase';
 
-const Portfolio = () => {
+interface PortfolioItem {
+  id: string;
+  title: string;
+  category: string;
+  year: string;
+  image: string | null;
+  order: number;
+}
+
+interface ResumeContent {
+  id: string;
+  section: string;
+  title: string;
+  content: string;
+  order: number;
+}
+
+interface PortfolioProps {
+  onAdminClick?: () => void;
+}
+
+const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick }) => {
   const { logout, username } = useAuth();
   const [activeSection, setActiveSection] = useState('home');
   const [isDark, setIsDark] = useState(true);
@@ -12,6 +34,8 @@ const Portfolio = () => {
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedProjectImage, setSelectedProjectImage] = useState(0);
+  const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [resumeContent, setResumeContent] = useState<ResumeContent[]>([]);
 
   const heroImages = ['Hero Image 1', 'Hero Image 2', 'Hero Image 3', 'Hero Image 4'];
 
@@ -23,25 +47,28 @@ const Portfolio = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [portfolioRes, resumeRes] = await Promise.all([
+          supabase.from('portfolio_items').select('*').order('order'),
+          supabase.from('resume_content').select('*').order('order')
+        ]);
+        if (portfolioRes.data) setPortfolioItems(portfolioRes.data);
+        if (resumeRes.data) setResumeContent(resumeRes.data);
+      } catch (error) {
+        console.error('Error loading data:', error);
+      }
+    };
+    loadData();
+  }, []);
+
   const theme = {
     dark: { bg: '#000000', secondary: '#2a2a2a', accent: '#FFD700', text: '#FFFFFF', textSecondary: '#a0a0a0' },
     light: { bg: '#FFFFFF', secondary: '#f5f5f5', accent: '#FFD700', text: '#000000', textSecondary: '#666666' }
   };
 
   const currentTheme = isDark ? theme.dark : theme.light;
-
-  const portfolioItems = [
-    { id: 1, title: 'Project Alpha', category: 'Media', year: '2024', image: 'unnamed.jpg' },
-    { id: 2, title: 'Digital Campaign', category: 'Branding', year: '2024', image: 'unnamed2.jpg' },
-    { id: 3, title: 'Visual Identity', category: 'Branding', year: '2023' },
-    { id: 4, title: 'Product Launch', category: 'Live Events', year: '2023' },
-    { id: 5, title: 'Brand Refresh', category: 'Print', year: '2023' },
-    { id: 6, title: 'Web Experience', category: 'Media', year: '2024' },
-    { id: 7, title: 'Conference Design', category: 'Live Events', year: '2024' },
-    { id: 8, title: 'Magazine Layout', category: 'Print', year: '2023' },
-    { id: 9, title: 'Documentary Film', category: 'Media', year: '2024' },
-    { id: 10, title: 'Corporate Identity', category: 'Branding', year: '2023' }
-  ];
 
   const getCurrentDate = () => {
     const options = { month: '2-digit', day: '2-digit', year: '2-digit' };
@@ -81,6 +108,24 @@ const Portfolio = () => {
           }}>
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
+          {onAdminClick && (
+            <button onClick={onAdminClick} style={{
+              background: 'none', border: `1px solid ${currentTheme.text}`, borderRadius: '50%',
+              width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', color: currentTheme.text, transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = currentTheme.accent;
+              (e.target as HTMLButtonElement).style.color = currentTheme.bg;
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
+              (e.target as HTMLButtonElement).style.color = currentTheme.text;
+            }}
+            title="Admin">
+              <Settings size={18} />
+            </button>
+          )}
           <button onClick={logout} style={{
             background: 'none', border: `1px solid ${currentTheme.text}`, borderRadius: '50%',
             width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -174,9 +219,13 @@ const Portfolio = () => {
                   <div key={item.id} style={{ minWidth: '250px', cursor: 'pointer', position: 'relative' }}>
                     <div style={{
                       aspectRatio: '4/3', backgroundColor: currentTheme.secondary, display: 'flex',
-                      alignItems: 'center', justifyContent: 'center', fontSize: '2rem', position: 'relative'
+                      alignItems: 'center', justifyContent: 'center', fontSize: '2rem', position: 'relative', overflow: 'hidden'
                     }}>
-                      {item.id}
+                      {item.image ? (
+                        <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        item.order
+                      )}
                       <div style={{
                         position: 'absolute', bottom: '0.5rem', left: '0.5rem',
                         fontFamily: 'Roboto, sans-serif', fontSize: '1.5rem', fontWeight: '700'
@@ -201,20 +250,29 @@ const Portfolio = () => {
                 PORTFOLIO
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2px', backgroundColor: currentTheme.secondary }}>
-                {portfolioItems.map((item) => (
-                  <div key={item.id} style={{ backgroundColor: currentTheme.bg, padding: '3rem', cursor: 'pointer' }}>
-                    <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', overflow: 'hidden' }}>
-                      {item.image ? (
-                        <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      ) : (
-                        item.id
-                      )}
+                {portfolioItems.length > 0 ? (
+                  portfolioItems.map((item) => (
+                    <div key={item.id} style={{ backgroundColor: currentTheme.bg, padding: '3rem', cursor: 'pointer' }}>
+                      <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', overflow: 'hidden' }}>
+                        {item.image ? (
+                          <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        ) : (
+                          item.order
+                        )}
+                      </div>
+                      <h3 style={{ fontSize: '1.75rem', fontWeight: '700', margin: '0 0 0.5rem 0', fontFamily: 'Roboto, sans-serif' }}>
+                        {item.title}
+                      </h3>
+                      <p style={{ fontSize: '0.875rem', color: currentTheme.textSecondary, margin: 0 }}>
+                        {item.category} • {item.year}
+                      </p>
                     </div>
-                    <h3 style={{ fontSize: '1.75rem', fontWeight: '700', margin: 0, fontFamily: 'Roboto, sans-serif' }}>
-                      {item.title}
-                    </h3>
+                  ))
+                ) : (
+                  <div style={{ gridColumn: '1 / -1', padding: '3rem', textAlign: 'center', color: currentTheme.textSecondary }}>
+                    No portfolio items yet
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </section>
@@ -231,6 +289,16 @@ const Portfolio = () => {
                   <img src="/unnamed.jpg" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8' }}>
+                  {resumeContent.length > 0 ? (
+                    resumeContent.map((item) => (
+                      <div key={item.id} style={{ marginBottom: '2rem' }}>
+                        <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>{item.title}</h3>
+                        <div style={{ whiteSpace: 'pre-wrap' }}>{item.content}</div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>No resume content yet</p>
+                  )}
                   <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>EXECUTIVE SUMMARY | INNOVATION LEADER</h3>
                   <p style={{ marginBottom: '2rem' }}>Entrepreneurial leader leveraging over two decades of success in Brand Management, Business Development, and Media to pioneer the next generation of audience engagement through Augmented Reality (AR) SaaS and AI driven strategy. Proven expertise in developing and executing integrated brand strategies, fostering audience loyalty, and identifying new revenue opportunities to drive business growth. My experience is rooted in creating tangible, high impact moments, including directing all IP content and fan engagement at major live events, such as the X-Games, the US Open of Surf, and the launch of Cross Colours - Music Without Prejudice.</p>
                   <h3 style={{ marginBottom: '1rem', fontWeight: 'bold' }}>CORE COMPETENCIES</h3>
