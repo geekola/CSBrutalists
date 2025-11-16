@@ -69,7 +69,7 @@ const Portfolio = () => {
         borderBottom: `1px solid ${currentTheme.secondary}`, padding: '1.5rem 3rem',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1000
       }}>
-        <div style={{ fontSize: '1.25rem', fontWeight: '700', fontFamily: 'Roboto, sans-serif' }}>LOGO</div>
+        <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto' }} />
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <div style={{ fontSize: '0.75rem', color: currentTheme.textSecondary, fontFamily: 'Courier, monospace' }}>
             {username}
