@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useAdmin } from '../contexts/AdminContext';
 import { supabase } from '../lib/supabase';
 import { ChevronUp, ChevronDown, Trash2, Plus } from 'lucide-react';
+import TipTapEditor from '../components/TipTapEditor';
 
 interface PortfolioItem {
   id: string;
@@ -278,10 +279,11 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
                         padding: '0.75rem', backgroundColor: currentTheme.bg, border: `1px solid ${currentTheme.secondary}`,
                         color: currentTheme.text, fontFamily: 'inherit'
                       }} />
-                      <textarea defaultValue={item.content} onChange={(e) => setEditForm({ ...editForm, content: e.target.value })} placeholder="Content" rows={6} style={{
-                        padding: '0.75rem', backgroundColor: currentTheme.bg, border: `1px solid ${currentTheme.secondary}`,
-                        color: currentTheme.text, fontFamily: 'inherit', resize: 'vertical'
-                      }} />
+                      <TipTapEditor
+                        content={item.content}
+                        onChange={(html) => setEditForm({ ...editForm, content: html })}
+                        theme={currentTheme}
+                      />
                       <div style={{ display: 'flex', gap: '1rem' }}>
                         <button onClick={() => updateResumeContent(item.id, editForm)} style={{
                           flex: 1, padding: '0.75rem', backgroundColor: currentTheme.accent, color: currentTheme.bg,
@@ -301,9 +303,7 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                       <div style={{ flex: 1 }}>
                         <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: '700' }}>{item.title}</h3>
-                        <p style={{ margin: 0, fontSize: '0.875rem', color: currentTheme.textSecondary, lineHeight: '1.6' }}>
-                          {item.content.substring(0, 100)}...
-                        </p>
+                        <div style={{ margin: 0, fontSize: '0.875rem', color: currentTheme.textSecondary, lineHeight: '1.6' }} dangerouslySetInnerHTML={{ __html: item.content.replace(/<[^>]*>/g, '').substring(0, 100) + '...' }} />
                       </div>
                       <div style={{ display: 'flex', gap: '0.5rem', marginLeft: '1rem' }}>
                         <button onClick={() => moveItem(resumeContent, item.id, 'up')} disabled={idx === 0} style={{

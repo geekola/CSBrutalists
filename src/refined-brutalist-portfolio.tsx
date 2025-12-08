@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X, Download, LogOut, Settings } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import { supabase } from './lib/supabase';
+import DOMPurify from 'dompurify';
 
 interface PortfolioItem {
   id: string;
@@ -293,7 +294,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick }) => {
                     resumeContent.map((item) => (
                       <div key={item.id} style={{ marginBottom: '2rem' }}>
                         <h3 style={{ marginTop: 0, marginBottom: '1rem', fontWeight: 'bold' }}>{item.title}</h3>
-                        <div style={{ whiteSpace: 'pre-wrap' }}>{item.content}</div>
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(item.content) }} />
                       </div>
                     ))
                   ) : (
