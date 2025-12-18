@@ -12,6 +12,17 @@ interface PortfolioItem {
   year: string;
   image: string | null;
   order: number;
+  description?: string;
+  featured_image_id?: string;
+}
+
+interface ProjectImage {
+  id: string;
+  project_id: string;
+  image_data: string;
+  image_name: string;
+  image_type: string;
+  order: number;
 }
 
 interface ResumeContent {
@@ -30,11 +41,14 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
   const { username } = useAuth();
   const { currentView, setCurrentView } = useAdmin();
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [projectImages, setProjectImages] = useState<{ [key: string]: ProjectImage[] }>({});
   const [resumeContent, setResumeContent] = useState<ResumeContent[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDark, setIsDark] = useState(true);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<Partial<PortfolioItem | ResumeContent>>({});
+  const [expandedProject, setExpandedProject] = useState<string | null>(null);
+  const [uploadingImageId, setUploadingImageId] = useState<string | null>(null);
 
   const theme = {
     dark: { bg: '#000000', secondary: '#2a2a2a', accent: '#FFD700', text: '#FFFFFF', textSecondary: '#a0a0a0' },
@@ -134,6 +148,73 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
     }
   };
 
+  const loadProjectImages = async (projectId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('project_images')
+        .select('*')
+        .eq('project_id', projectId)
+        .order('order');
+
+      if (error) throw error;
+      if (data) {
+        setProjectImages(prev => ({ ...prev, [projectId]: data }));
+      }
+    } catch (error) {
+      console.error('Error loading project images:', error);
+    }
+  };
+
+  const handleImageUpload = async (projectId: string, file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Please select a valid image file');
+      return;
+    }
+
+    setUploadingImageId(projectId);
+    try {
+      const reader = new FileReader();
+      reader.onload = async (e) => {
+        const base64 = (e.target?.result as string).split(',')[1];
+        const { error } = await supabase
+          .from('project_images')
+          .insert([
+            {
+              project_id: projectId,
+              image_data: base64,
+              image_name: file.name,
+              image_type: file.type,
+              order: (projectImages[projectId]?.length || 0) + 1
+            }
+          ]);
+
+        if (error) throw error;
+        await loadProjectImages(projectId);
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      alert('Failed to upload image');
+    } finally {
+      setUploadingImageId(null);
+    }
+  };
+
+  const deleteProjectImage = async (projectId: string, imageId: string) => {
+    if (!confirm('Delete this image?')) return;
+    try {
+      const { error } = await supabase
+        .from('project_images')
+        .delete()
+        .eq('id', imageId);
+
+      if (error) throw error;
+      await loadProjectImages(projectId);
+    } catch (error) {
+      console.error('Error deleting image:', error);
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ backgroundColor: currentTheme.bg, color: currentTheme.text, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -207,6 +288,10 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
                         padding: '0.75rem', backgroundColor: currentTheme.bg, border: `1px solid ${currentTheme.secondary}`,
                         color: currentTheme.text, fontFamily: 'inherit'
                       }} />
+                      <textarea defaultValue={item.description || ''} onChange={(e) => setEditForm({ ...editForm, description: e.target.value })} placeholder="Project Description" rows={3} style={{
+                        padding: '0.75rem', backgroundColor: currentTheme.bg, border: `1px solid ${currentTheme.secondary}`,
+                        color: currentTheme.text, fontFamily: 'inherit', resize: 'vertical'
+                      }} />
                       <div style={{ display: 'flex', gap: '1rem' }}>
                         <button onClick={() => updatePortfolioItem(item.id, editForm)} style={{
                           flex: 1, padding: '0.75rem', backgroundColor: currentTheme.accent, color: currentTheme.bg,
@@ -223,39 +308,96 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
                       </div>
                     </div>
                   ) : (
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <div>
-                        <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: '700' }}>{item.title}</h3>
-                        <p style={{ margin: 0, fontSize: '0.875rem', color: currentTheme.textSecondary }}>
-                          {item.category} | {item.year} {item.image && `| ${item.image}`}
-                        </p>
+                    <div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: expandedProject === item.id ? '1rem' : 0 }}>
+                        <div style={{ flex: 1 }}>
+                          <h3 style={{ margin: '0 0 0.5rem 0', fontWeight: '700' }}>{item.title}</h3>
+                          <p style={{ margin: 0, fontSize: '0.875rem', color: currentTheme.textSecondary }}>
+                            {item.category} | {item.year} {item.image && `| ${item.image}`}
+                          </p>
+                        </div>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                          <button onClick={() => { if (expandedProject === item.id) setExpandedProject(null); else { setExpandedProject(item.id); loadProjectImages(item.id); } }} style={{
+                            padding: '0.5rem 1rem', backgroundColor: currentTheme.secondary, color: currentTheme.text,
+                            border: `1px solid ${currentTheme.secondary}`, cursor: 'pointer', fontWeight: '700', fontFamily: 'inherit', fontSize: '0.75rem'
+                          }}>
+                            {expandedProject === item.id ? 'HIDE' : 'IMAGES'}
+                          </button>
+                          <button onClick={() => moveItem(portfolioItems, item.id, 'up')} disabled={idx === 0} style={{
+                            padding: '0.5rem', backgroundColor: currentTheme.secondary, border: `1px solid ${currentTheme.secondary}`,
+                            color: currentTheme.text, cursor: idx === 0 ? 'not-allowed' : 'pointer', opacity: idx === 0 ? 0.5 : 1
+                          }}>
+                            <ChevronUp size={16} />
+                          </button>
+                          <button onClick={() => moveItem(portfolioItems, item.id, 'down')} disabled={idx === portfolioItems.length - 1} style={{
+                            padding: '0.5rem', backgroundColor: currentTheme.secondary, border: `1px solid ${currentTheme.secondary}`,
+                            color: currentTheme.text, cursor: idx === portfolioItems.length - 1 ? 'not-allowed' : 'pointer', opacity: idx === portfolioItems.length - 1 ? 0.5 : 1
+                          }}>
+                            <ChevronDown size={16} />
+                          </button>
+                          <button onClick={() => { setEditingId(item.id); setEditForm(item); }} style={{
+                            padding: '0.5rem 1rem', backgroundColor: currentTheme.accent, color: currentTheme.bg,
+                            border: 'none', cursor: 'pointer', fontWeight: '700', fontFamily: 'inherit'
+                          }}>
+                            EDIT
+                          </button>
+                          <button onClick={() => deletePortfolioItem(item.id)} style={{
+                            padding: '0.5rem', backgroundColor: '#5a2a2a', border: `1px solid #5a2a2a`,
+                            color: '#ff6b6b', cursor: 'pointer'
+                          }}>
+                            <Trash2 size={16} />
+                          </button>
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <button onClick={() => moveItem(portfolioItems, item.id, 'up')} disabled={idx === 0} style={{
-                          padding: '0.5rem', backgroundColor: currentTheme.secondary, border: `1px solid ${currentTheme.secondary}`,
-                          color: currentTheme.text, cursor: idx === 0 ? 'not-allowed' : 'pointer', opacity: idx === 0 ? 0.5 : 1
-                        }}>
-                          <ChevronUp size={16} />
-                        </button>
-                        <button onClick={() => moveItem(portfolioItems, item.id, 'down')} disabled={idx === portfolioItems.length - 1} style={{
-                          padding: '0.5rem', backgroundColor: currentTheme.secondary, border: `1px solid ${currentTheme.secondary}`,
-                          color: currentTheme.text, cursor: idx === portfolioItems.length - 1 ? 'not-allowed' : 'pointer', opacity: idx === portfolioItems.length - 1 ? 0.5 : 1
-                        }}>
-                          <ChevronDown size={16} />
-                        </button>
-                        <button onClick={() => { setEditingId(item.id); setEditForm(item); }} style={{
-                          padding: '0.5rem 1rem', backgroundColor: currentTheme.accent, color: currentTheme.bg,
-                          border: 'none', cursor: 'pointer', fontWeight: '700', fontFamily: 'inherit'
-                        }}>
-                          EDIT
-                        </button>
-                        <button onClick={() => deletePortfolioItem(item.id)} style={{
-                          padding: '0.5rem', backgroundColor: '#5a2a2a', border: `1px solid #5a2a2a`,
-                          color: '#ff6b6b', cursor: 'pointer'
-                        }}>
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
+                      {expandedProject === item.id && (
+                        <div style={{ borderTop: `1px solid ${currentTheme.secondary}`, paddingTop: '1rem', marginTop: '1rem' }}>
+                          <div style={{ marginBottom: '1rem' }}>
+                            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '700' }}>
+                              Upload Images:
+                            </label>
+                            <input
+                              type="file"
+                              multiple
+                              accept="image/*"
+                              onChange={(e) => {
+                                const files = e.currentTarget.files;
+                                if (files) {
+                                  Array.from(files).forEach(file => handleImageUpload(item.id, file));
+                                }
+                              }}
+                              disabled={uploadingImageId === item.id}
+                              style={{
+                                padding: '0.5rem', backgroundColor: currentTheme.bg, border: `1px solid ${currentTheme.secondary}`,
+                                color: currentTheme.text, fontFamily: 'inherit', width: '100%', cursor: 'pointer'
+                              }}
+                            />
+                          </div>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '0.5rem' }}>
+                            {projectImages[item.id]?.map((img) => (
+                              <div key={img.id} style={{ position: 'relative', aspectRatio: '1' }}>
+                                <img
+                                  src={`data:${img.image_type};base64,${img.image_data}`}
+                                  alt={img.image_name}
+                                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                />
+                                <button
+                                  onClick={() => deleteProjectImage(item.id, img.id)}
+                                  style={{
+                                    position: 'absolute', top: '0.25rem', right: '0.25rem',
+                                    backgroundColor: '#5a2a2a', color: '#ff6b6b', border: 'none',
+                                    padding: '0.25rem', cursor: 'pointer', borderRadius: '0'
+                                  }}
+                                >
+                                  <Trash2 size={14} />
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                          {!projectImages[item.id]?.length && (
+                            <p style={{ fontSize: '0.875rem', color: currentTheme.textSecondary }}>No images yet</p>
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -23,9 +23,10 @@ interface ResumeContent {
 
 interface PortfolioProps {
   onAdminClick?: () => void;
+  onProjectClick?: (project: PortfolioItem) => void;
 }
 
-const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick }) => {
+const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) => {
   const { logout, username } = useAuth();
   const [activeSection, setActiveSection] = useState('home');
   const [isDark, setIsDark] = useState(true);
@@ -253,7 +254,22 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick }) => {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2px', backgroundColor: currentTheme.secondary }}>
                 {portfolioItems.length > 0 ? (
                   portfolioItems.map((item) => (
-                    <div key={item.id} style={{ backgroundColor: currentTheme.bg, padding: '3rem', cursor: 'pointer' }}>
+                    <div
+                      key={item.id}
+                      onClick={() => onProjectClick?.(item)}
+                      style={{
+                        backgroundColor: currentTheme.bg,
+                        padding: '3rem',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s',
+                      }}
+                      onMouseEnter={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.backgroundColor = currentTheme.secondary;
+                      }}
+                      onMouseLeave={(e) => {
+                        (e.currentTarget as HTMLDivElement).style.backgroundColor = currentTheme.bg;
+                      }}
+                    >
                       <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', overflow: 'hidden' }}>
                         {item.image ? (
                           <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
