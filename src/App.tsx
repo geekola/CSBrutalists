@@ -5,6 +5,8 @@ import Portfolio from './refined-brutalist-portfolio';
 import ProjectDetails from './pages/ProjectDetails';
 import Admin from './pages/Admin';
 import { AdminProvider } from './contexts/AdminContext';
+import { ToastProvider } from './contexts/ToastContext';
+import Toast from './components/Toast';
 
 interface PortfolioItem {
   id: string;
@@ -45,15 +47,18 @@ function App() {
   }
 
   return (
-    <AdminProvider>
-      {showAdmin ? (
-        <Admin onBack={() => setShowAdmin(false)} />
-      ) : selectedProject ? (
-        <ProjectDetails project={selectedProject} onBack={() => setSelectedProject(null)} />
-      ) : (
-        <Portfolio onAdminClick={() => setShowAdmin(true)} onProjectClick={setSelectedProject} />
-      )}
-    </AdminProvider>
+    <ToastProvider>
+      <AdminProvider>
+        {showAdmin ? (
+          <Admin onBack={() => setShowAdmin(false)} />
+        ) : selectedProject ? (
+          <ProjectDetails project={selectedProject} onBack={() => setSelectedProject(null)} />
+        ) : (
+          <Portfolio onAdminClick={() => setShowAdmin(true)} onProjectClick={setSelectedProject} />
+        )}
+      </AdminProvider>
+      <Toast />
+    </ToastProvider>
   );
 }
 
