@@ -11,6 +11,11 @@ interface PortfolioItem {
   year: string;
   image: string | null;
   order: number;
+  featured_image_id?: string;
+  featured_image?: {
+    image_data: string;
+    image_type: string;
+  };
 }
 
 interface ResumeContent {
@@ -59,7 +64,28 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
           supabase.from('portfolio_items').select('*').order('order'),
           supabase.from('resume_content').select('*').order('order')
         ]);
-        if (portfolioRes.data) setPortfolioItems(portfolioRes.data);
+
+        if (portfolioRes.data) {
+          const itemsWithImages = await Promise.all(
+            portfolioRes.data.map(async (item) => {
+              if (item.featured_image_id) {
+                const { data: imageData } = await supabase
+                  .from('project_images')
+                  .select('image_data, image_type')
+                  .eq('id', item.featured_image_id)
+                  .maybeSingle();
+
+                return {
+                  ...item,
+                  featured_image: imageData || undefined
+                };
+              }
+              return item;
+            })
+          );
+          setPortfolioItems(itemsWithImages);
+        }
+
         if (resumeRes.data) setResumeContent(resumeRes.data);
       } catch (error) {
         console.error('Error loading data:', error);
@@ -252,7 +278,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                       aspectRatio: '4/3', backgroundColor: currentTheme.secondary, display: 'flex',
                       alignItems: 'center', justifyContent: 'center', fontSize: '2rem', position: 'relative', overflow: 'hidden'
                     }}>
-                      {item.image ? (
+                      {item.featured_image ? (
+                        <img
+                          src={`data:${item.featured_image.image_type};base64,${item.featured_image.image_data}`}
+                          alt={item.title}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                        />
+                      ) : item.image ? (
                         <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                       ) : (
                         item.order
@@ -301,7 +333,13 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                       }}
                     >
                       <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', overflow: 'hidden' }}>
-                        {item.image ? (
+                        {item.featured_image ? (
+                          <img
+                            src={`data:${item.featured_image.image_type};base64,${item.featured_image.image_data}`}
+                            alt={item.title}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                          />
+                        ) : item.image ? (
                           <img src={item.image} alt={item.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                         ) : (
                           item.order
