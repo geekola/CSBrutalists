@@ -49,6 +49,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
   const [originalData, setOriginalData] = useState(item);
   const [uploadingFiles, setUploadingFiles] = useState<string[]>([]);
   const [dragActive, setDragActive] = useState(false);
+  const [uploadHover, setUploadHover] = useState(false);
   const [editingImage, setEditingImage] = useState<ProjectImage | null>(null);
   const [editCaption, setEditCaption] = useState('');
   const [editAltText, setEditAltText] = useState('');
@@ -91,16 +92,30 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
   };
 
   const handleFileSelect = async (files: FileList | null) => {
-    if (!files || files.length === 0 || !item.id) return;
+    console.log('handleFileSelect called with:', files);
+
+    if (!files || files.length === 0) {
+      console.log('No files selected');
+      return;
+    }
+
+    if (!item.id) {
+      console.log('No item ID - portfolio item must be saved first');
+      alert('Please save the portfolio item before uploading images.');
+      return;
+    }
 
     const fileArray = Array.from(files);
     const fileNames = fileArray.map(f => f.name);
+    console.log('Processing files:', fileNames);
     setUploadingFiles(prev => [...prev, ...fileNames]);
 
     for (const file of fileArray) {
       try {
+        console.log(`Processing ${file.name} (${(file.size / 1024 / 1024).toFixed(2)}MB)`);
         const base64WithPrefix = await processImage(file);
         const base64 = base64WithPrefix.split(',')[1];
+        console.log(`Image processed successfully: ${file.name}`);
 
         const { error } = await supabase
           .from('project_images')
@@ -115,6 +130,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
           }]);
 
         if (error) throw error;
+        console.log(`Successfully uploaded: ${file.name}`);
       } catch (error) {
         console.error('Error uploading image:', error);
         alert(`Failed to upload ${file.name}: ${error instanceof Error ? error.message : 'Unknown error'}`);
@@ -294,6 +310,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
           width: '95%',
           maxHeight: '90vh',
           overflowY: 'auto',
+          pointerEvents: 'auto',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -405,16 +422,22 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
                 onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
+                onClick={() => {
+                  console.log('Upload area clicked, triggering file input');
+                  fileInputRef.current?.click();
+                }}
+                onMouseEnter={() => setUploadHover(true)}
+                onMouseLeave={() => setUploadHover(false)}
                 style={{
                   border: `2px dashed ${dragActive ? theme.accent : theme.secondary}`,
                   borderRadius: '0.25rem',
                   padding: '2rem',
                   textAlign: 'center',
                   cursor: 'pointer',
-                  backgroundColor: dragActive ? theme.secondary : 'transparent',
+                  backgroundColor: dragActive ? theme.secondary : uploadHover ? `${theme.secondary}80` : 'transparent',
                   transition: 'all 0.2s',
                   marginBottom: '1rem',
+                  pointerEvents: 'auto',
                 }}
               >
                 <Upload size={32} style={{ margin: '0 auto 0.5rem', display: 'block', color: theme.textSecondary }} />
