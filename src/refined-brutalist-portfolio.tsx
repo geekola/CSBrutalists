@@ -177,7 +177,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
            
             <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '0 3rem' }}>
               <div style={{
-                aspectRatio: '16/9', backgroundColor: currentTheme.secondary, marginBottom: '1rem',
+                aspectRatio: '32/9', backgroundColor: currentTheme.secondary, marginBottom: '1rem',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem'
               }}>
                 {heroImages[currentHeroImage]}
