@@ -83,7 +83,20 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
         .order('order');
 
       if (error) throw error;
-      if (data) setProjectImages(data);
+      if (data) {
+        setProjectImages(data);
+
+        if (data.length === 1) {
+          setFormData(prev => {
+            if (!prev.featured_image_id) {
+              setIsDirty(true);
+              console.log('Auto-set first image as featured on load');
+              return { ...prev, featured_image_id: data[0].id };
+            }
+            return prev;
+          });
+        }
+      }
     } catch (error) {
       console.error('Error loading project images:', error);
     } finally {
@@ -141,6 +154,22 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
 
     if (item.id) {
       await loadProjectImages(item.id);
+
+      const { data: images } = await supabase
+        .from('project_images')
+        .select('*')
+        .eq('project_id', item.id);
+
+      if (images && images.length === 1) {
+        setFormData(prev => {
+          if (!prev.featured_image_id) {
+            setIsDirty(true);
+            console.log('Auto-set first image as featured after upload');
+            return { ...prev, featured_image_id: images[0].id };
+          }
+          return prev;
+        });
+      }
     }
   };
 
@@ -175,12 +204,26 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
 
       if (error) throw error;
 
-      if (formData.featured_image_id === imageId) {
-        setFormData({ ...formData, featured_image_id: undefined });
-        setIsDirty(true);
-      }
-
       if (item.id) {
+        const { data: remainingImages } = await supabase
+          .from('project_images')
+          .select('*')
+          .eq('project_id', item.id);
+
+        setFormData(prev => {
+          const wasFeatured = prev.featured_image_id === imageId;
+
+          if (remainingImages && remainingImages.length === 1) {
+            setIsDirty(true);
+            console.log('Auto-set remaining image as featured after delete');
+            return { ...prev, featured_image_id: remainingImages[0].id };
+          } else if (wasFeatured) {
+            setIsDirty(true);
+            return { ...prev, featured_image_id: undefined };
+          }
+          return prev;
+        });
+
         await loadProjectImages(item.id);
       }
     } catch (error) {
