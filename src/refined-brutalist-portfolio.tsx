@@ -34,18 +34,21 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
+  const [currentResumeImage, setCurrentResumeImage] = useState(0);
   const [selectedProject, setSelectedProject] = useState(null);
   const [selectedProjectImage, setSelectedProjectImage] = useState(0);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
   const [resumeContent, setResumeContent] = useState<ResumeContent[]>([]);
 
   const heroImages = ['Hero Image 1', 'Hero Image 2', 'Hero Image 3', 'Hero Image 4'];
+  const resumeImages = ['/unnamed.jpg', '/unnamed2.jpg'];
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
     handleResize();
     window.addEventListener('resize', handleResize);
     setCurrentHeroImage(Math.floor(Math.random() * heroImages.length));
+    setCurrentResumeImage(Math.floor(Math.random() * resumeImages.length));
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -89,6 +92,9 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
   const handleNavClick = (section) => {
     setActiveSection(section);
     setMobileMenuOpen(false);
+    if (section === 'resume') {
+      setCurrentResumeImage(Math.floor(Math.random() * resumeImages.length));
+    }
   };
 
   return (
@@ -314,7 +320,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 3fr', gap: '3rem' }}>
                 <div style={{ aspectRatio: '3/4', backgroundColor: currentTheme.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', overflow: 'hidden' }}>
-                  <img src="/unnamed.jpg" alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={resumeImages[currentResumeImage]} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
                 <div style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8' }}>
                   {resumeContent.length > 0 ? (
