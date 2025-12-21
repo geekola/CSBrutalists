@@ -66,7 +66,7 @@ Deno.serve(async (req: Request) => {
       );
     }
 
-    const users: Array<{ id: string; username: string; password_hash: string; is_active: boolean }> = await response.json();
+    const users: Array<{ id: string; username: string; password_hash: string; is_active: boolean; role: string }> = await response.json();
 
     if (users.length === 0 || !users[0].is_active) {
       return new Response(
@@ -92,7 +92,7 @@ Deno.serve(async (req: Request) => {
     }
 
     return new Response(
-      JSON.stringify({ success: true, username: user.username }),
+      JSON.stringify({ success: true, username: user.username, role: user.role }),
       {
         status: 200,
         headers: { ...corsHeaders, "Content-Type": "application/json" },

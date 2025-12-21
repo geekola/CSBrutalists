@@ -3,6 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 interface AuthContextType {
   isAuthenticated: boolean;
   username: string | null;
+  role: string | null;
+  isAdmin: boolean;
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
@@ -13,14 +15,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem('auth');
     if (storedAuth) {
       try {
-        const { username: storedUsername } = JSON.parse(storedAuth);
+        const { username: storedUsername, role: storedRole } = JSON.parse(storedAuth);
         setUsername(storedUsername);
+        setRole(storedRole);
         setIsAuthenticated(true);
       } catch {
         localStorage.removeItem('auth');
@@ -49,7 +53,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (data.success) {
           setIsAuthenticated(true);
           setUsername(username);
-          localStorage.setItem('auth', JSON.stringify({ username }));
+          setRole(data.role);
+          localStorage.setItem('auth', JSON.stringify({ username, role: data.role }));
           return true;
         }
       }
@@ -64,11 +69,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setIsAuthenticated(false);
     setUsername(null);
+    setRole(null);
     localStorage.removeItem('auth');
   };
 
+  const isAdmin = role === 'admin';
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, username, login, logout, isLoading }}>
+    <AuthContext.Provider value={{ isAuthenticated, username, role, isAdmin, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

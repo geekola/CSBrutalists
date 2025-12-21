@@ -7,6 +7,7 @@ import { ChevronUp, ChevronDown, Trash2, Plus, Copy } from 'lucide-react';
 import PortfolioItemEditor from '../components/PortfolioItemEditor';
 import ResumeItemEditor from '../components/ResumeItemEditor';
 import ConfirmDialog from '../components/ConfirmDialog';
+import { processImage } from '../utils/imageUtils';
 
 interface PortfolioItem {
   id: string;
@@ -310,35 +311,29 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
   };
 
   const handleImageUpload = async (projectId: string, file: File) => {
-    if (!file.type.startsWith('image/')) {
-      alert('Please select a valid image file');
-      return;
-    }
-
     setUploadingImageId(projectId);
     try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64 = (e.target?.result as string).split(',')[1];
-        const { error } = await supabase
-          .from('project_images')
-          .insert([
-            {
-              project_id: projectId,
-              image_data: base64,
-              image_name: file.name,
-              image_type: file.type,
-              order: (projectImages[projectId]?.length || 0) + 1
-            }
-          ]);
+      const base64WithPrefix = await processImage(file);
+      const base64 = base64WithPrefix.split(',')[1];
 
-        if (error) throw error;
-        await loadProjectImages(projectId);
-      };
-      reader.readAsDataURL(file);
+      const { error } = await supabase
+        .from('project_images')
+        .insert([
+          {
+            project_id: projectId,
+            image_data: base64,
+            image_name: file.name,
+            image_type: file.type,
+            order: (projectImages[projectId]?.length || 0) + 1
+          }
+        ]);
+
+      if (error) throw error;
+      await loadProjectImages(projectId);
+      addToast('Image uploaded successfully', 'success');
     } catch (error) {
       console.error('Error uploading image:', error);
-      alert('Failed to upload image');
+      addToast(error instanceof Error ? error.message : 'Failed to upload image', 'error');
     } finally {
       setUploadingImageId(null);
     }

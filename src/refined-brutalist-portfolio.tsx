@@ -27,7 +27,7 @@ interface PortfolioProps {
 }
 
 const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) => {
-  const { logout, username } = useAuth();
+  const { logout, username, isAdmin } = useAuth();
   const [activeSection, setActiveSection] = useState('home');
   const [isDark, setIsDark] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -129,7 +129,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
           }}>
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
-          {onAdminClick && (
+          {onAdminClick && isAdmin && (
             <button onClick={onAdminClick} style={{
               background: 'none', border: `1px solid ${currentTheme.text}`, borderRadius: '50%',
               width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center',
