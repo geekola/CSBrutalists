@@ -27,6 +27,8 @@ interface ProjectImage {
   image_name: string;
   image_type: string;
   order: number;
+  caption: string;
+  alt_text: string;
 }
 
 interface ResumeContent {
@@ -324,7 +326,9 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
             image_data: base64,
             image_name: file.name,
             image_type: file.type,
-            order: (projectImages[projectId]?.length || 0) + 1
+            order: (projectImages[projectId]?.length || 0) + 1,
+            caption: '',
+            alt_text: ''
           }
         ]);
 
