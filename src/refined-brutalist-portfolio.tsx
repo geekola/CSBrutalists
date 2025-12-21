@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X, Download, LogOut, Settings } from 'lucide-react';
+import { Sun, Moon, Menu, X, Download, LogOut, Settings, Linkedin, Mail, Github } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import { supabase } from './lib/supabase';
 import DOMPurify from 'dompurify';
@@ -396,13 +396,45 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
 <p style={{ marginBottom: '1rem' }}>Wilmington University</p>
 <p>Sept. 1998–Dec 2002</p>
 <p>Bachelor of Science, Business Management</p>
-                  <button style={{
-                    display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
-                    border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
-                    cursor: 'pointer', fontFamily: 'Roboto, sans-serif', marginTop: '2rem'
-                  }}>
-                    <Download size={20} /> DOWNLOAD CV
-                  </button>
+                  <div style={{ marginTop: '2rem', display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+                    <button style={{
+                      display: 'flex', alignItems: 'center', gap: '0.5rem', backgroundColor: 'transparent',
+                      border: `2px solid ${currentTheme.text}`, color: currentTheme.text, padding: '1rem 2rem',
+                      cursor: 'pointer', fontFamily: 'Roboto, sans-serif'
+                    }}>
+                      <Download size={20} /> DOWNLOAD CV
+                    </button>
+                    <a
+                      href="https://www.linkedin.com/in/cscottgroup"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.5rem',
+                        backgroundColor: 'transparent',
+                        border: `2px solid ${currentTheme.text}`,
+                        color: currentTheme.text,
+                        padding: '1rem 2rem',
+                        cursor: 'pointer',
+                        fontFamily: 'Roboto, sans-serif',
+                        textDecoration: 'none',
+                        transition: 'all 0.2s'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = currentTheme.accent;
+                        e.currentTarget.style.color = currentTheme.bg;
+                        e.currentTarget.style.borderColor = currentTheme.accent;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = 'transparent';
+                        e.currentTarget.style.color = currentTheme.text;
+                        e.currentTarget.style.borderColor = currentTheme.text;
+                      }}
+                    >
+                      <Linkedin size={20} /> VIEW LINKEDIN
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -421,8 +453,49 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                     About content here...
                   </p>
                   <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-                    <a href="#" style={{ color: currentTheme.text, fontSize: '1.5rem' }}>📌</a>
-                    <a href="#" style={{ color: currentTheme.text, fontSize: '1.5rem' }}>📷</a>
+                    <a
+                      href="https://www.linkedin.com/in/cscottgroup"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: currentTheme.text,
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
+                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
+                    >
+                      <Linkedin size={24} />
+                    </a>
+                    <a
+                      href="mailto:contact@example.com"
+                      style={{
+                        color: currentTheme.text,
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
+                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
+                    >
+                      <Mail size={24} />
+                    </a>
+                    <a
+                      href="https://github.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: currentTheme.text,
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
+                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
+                    >
+                      <Github size={24} />
+                    </a>
                   </div>
                 </div>
                 <div style={{ aspectRatio: '4/3', backgroundColor: currentTheme.secondary, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '4rem' }}>
@@ -483,8 +556,49 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                     SEND MESSAGE
                   </button>
                   <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
-                    <a href="#" style={{ color: currentTheme.text, fontSize: '1.5rem' }}>📌</a>
-                    <a href="#" style={{ color: currentTheme.text, fontSize: '1.5rem' }}>📷</a>
+                    <a
+                      href="https://www.linkedin.com/in/cscottgroup"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: currentTheme.text,
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
+                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
+                    >
+                      <Linkedin size={24} />
+                    </a>
+                    <a
+                      href="mailto:contact@example.com"
+                      style={{
+                        color: currentTheme.text,
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
+                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
+                    >
+                      <Mail size={24} />
+                    </a>
+                    <a
+                      href="https://github.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        color: currentTheme.text,
+                        transition: 'color 0.2s',
+                        display: 'flex',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
+                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
+                    >
+                      <Github size={24} />
+                    </a>
                   </div>
                 </div>
               </div>
