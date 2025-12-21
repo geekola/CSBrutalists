@@ -1,0 +1,12 @@
+# robots.txt for CS Brutalists Portfolio
+# https://csbrut.netlify.app
+
+User-agent: *
+Allow: /
+
+# Disallow admin routes
+Disallow: /admin
+Disallow: /login
+
+# Sitemap location
+Sitemap: https://csbrut.netlify.app/sitemap.xml

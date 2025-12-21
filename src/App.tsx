@@ -6,6 +6,7 @@ import ProjectDetails from './pages/ProjectDetails';
 import Admin from './pages/Admin';
 import { AdminProvider } from './contexts/AdminContext';
 import { ToastProvider } from './contexts/ToastContext';
+import { SEOProvider } from './contexts/SEOContext';
 import Toast from './components/Toast';
 import { supabase } from './lib/supabase';
 
@@ -90,24 +91,26 @@ function App() {
   };
 
   return (
-    <ToastProvider>
-      <AdminProvider>
-        {showAdmin ? (
-          <Admin onBack={() => setShowAdmin(false)} />
-        ) : selectedProject ? (
-          <ProjectDetails
-            project={selectedProject}
-            onBack={() => setSelectedProject(null)}
-            onNavigate={handleProjectNavigation}
-            currentIndex={getCurrentProjectIndex()}
-            totalProjects={portfolioItems.length}
-          />
-        ) : (
-          <Portfolio onAdminClick={() => setShowAdmin(true)} onProjectClick={setSelectedProject} />
-        )}
-      </AdminProvider>
-      <Toast />
-    </ToastProvider>
+    <SEOProvider>
+      <ToastProvider>
+        <AdminProvider>
+          {showAdmin ? (
+            <Admin onBack={() => setShowAdmin(false)} />
+          ) : selectedProject ? (
+            <ProjectDetails
+              project={selectedProject}
+              onBack={() => setSelectedProject(null)}
+              onNavigate={handleProjectNavigation}
+              currentIndex={getCurrentProjectIndex()}
+              totalProjects={portfolioItems.length}
+            />
+          ) : (
+            <Portfolio onAdminClick={() => setShowAdmin(true)} onProjectClick={setSelectedProject} />
+          )}
+        </AdminProvider>
+        <Toast />
+      </ToastProvider>
+    </SEOProvider>
   );
 }
 

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon, Menu, X, Download, LogOut, Settings, Linkedin, Mail, Github } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
+import { useSEOContext } from './contexts/SEOContext';
+import { updateMetaTags } from './hooks/useSEO';
+import StructuredData from './components/StructuredData';
 import { supabase } from './lib/supabase';
 import DOMPurify from 'dompurify';
 
@@ -33,6 +36,7 @@ interface PortfolioProps {
 
 const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) => {
   const { logout, username, isAdmin } = useAuth();
+  const { seoSettings, getPageSEO } = useSEOContext();
   const [activeSection, setActiveSection] = useState('home');
   const [isDark, setIsDark] = useState(true);
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -94,6 +98,30 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
     loadData();
   }, []);
 
+  useEffect(() => {
+    const updatePageSEO = async () => {
+      if (!seoSettings) return;
+
+      const pageSEO = await getPageSEO(activeSection);
+
+      if (pageSEO) {
+        updateMetaTags({
+          title: pageSEO.title,
+          description: pageSEO.meta_description,
+          keywords: pageSEO.keywords || seoSettings.meta_keywords,
+          ogTitle: pageSEO.og_title || pageSEO.title,
+          ogDescription: pageSEO.og_description || pageSEO.meta_description,
+          ogImage: pageSEO.og_image || seoSettings.og_image,
+          ogType: seoSettings.og_type,
+          twitterCard: 'summary_large_image',
+          canonicalUrl: pageSEO.canonical_url || window.location.href
+        });
+      }
+    };
+
+    updatePageSEO();
+  }, [activeSection, seoSettings, getPageSEO]);
+
   const theme = {
     dark: { bg: '#000000', secondary: '#2a2a2a', accent: '#FFD700', text: '#FFFFFF', textSecondary: '#a0a0a0' },
     light: { bg: '#FFFFFF', secondary: '#f5f5f5', accent: '#FFD700', text: '#000000', textSecondary: '#666666' }
@@ -125,6 +153,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
 
   return (
     <div style={{ backgroundColor: currentTheme.bg, color: currentTheme.text, minHeight: '100vh' }}>
+      {seoSettings && <StructuredData seoSettings={seoSettings} pageType={activeSection as any} />}
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, backgroundColor: currentTheme.bg,
         borderBottom: `1px solid ${currentTheme.secondary}`, padding: '1.5rem 3rem',
@@ -500,8 +529,14 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                   <h2 style={{ fontSize: 'clamp(3rem, 8vw, 6rem)', fontWeight: '900', margin: '0 0 2rem 0', fontFamily: 'Roboto, sans-serif' }}>
                     ABOUT
                   </h2>
+                  <p style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8', marginBottom: '1rem' }}>
+                    Based in Los Angeles, California, I'm an entrepreneurial leader with over 20 years of experience in brand strategy, business development, and media innovation.
+                  </p>
+                  <p style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8', marginBottom: '1rem' }}>
+                    I specialize in pioneering the next generation of audience engagement through Augmented Reality (AR) SaaS and AI-driven strategy. My work spans across Los Angeles and Southern California, helping brands create meaningful connections with their audiences.
+                  </p>
                   <p style={{ fontFamily: 'Courier, monospace', fontSize: '0.875rem', lineHeight: '1.8' }}>
-                    About content here...
+                    From directing major live events like the X-Games and US Open of Surf to launching innovative AR/AI products, I bring a unique blend of creative vision and strategic execution to every project.
                   </p>
                   <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem' }}>
                     <a
@@ -565,9 +600,20 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '3rem' }}>
                 <div>
-                  <p style={{ fontSize: '1.25rem', lineHeight: '1.6', marginBottom: '3rem' }}>
-                    Get in touch for collaborations and inquiries.
+                  <p style={{ fontSize: '1.25rem', lineHeight: '1.6', marginBottom: '2rem' }}>
+                    Get in touch for brand strategy, AR/AI product development, and digital media consulting.
                   </p>
+                  <p style={{ fontSize: '1rem', lineHeight: '1.6', color: currentTheme.textSecondary, marginBottom: '1.5rem' }}>
+                    Serving Los Angeles, Santa Monica, Beverly Hills, Culver City, West Hollywood, and throughout Southern California.
+                  </p>
+                  <div style={{ marginBottom: '2rem' }}>
+                    <p style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>
+                      <strong>Email:</strong> contact@csbrut.com
+                    </p>
+                    <p style={{ fontSize: '0.875rem' }}>
+                      <strong>Location:</strong> Los Angeles, CA
+                    </p>
+                  </div>
                 </div>
                 <div>
                   <div style={{ marginBottom: '2rem' }}>

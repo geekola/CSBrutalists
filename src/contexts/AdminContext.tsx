@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-type AdminView = 'portfolio' | 'resume';
+type AdminView = 'portfolio' | 'resume' | 'seo';
 
 interface AdminContextType {
   currentView: AdminView;

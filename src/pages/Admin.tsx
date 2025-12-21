@@ -7,6 +7,7 @@ import { ChevronUp, ChevronDown, Trash2, Plus, Copy } from 'lucide-react';
 import PortfolioItemEditor from '../components/PortfolioItemEditor';
 import ResumeItemEditor from '../components/ResumeItemEditor';
 import ConfirmDialog from '../components/ConfirmDialog';
+import SEOSettings from '../components/SEOSettings';
 import { processImage } from '../utils/imageUtils';
 
 interface PortfolioItem {
@@ -401,6 +402,13 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
         }}>
           RESUME CONTENT
         </button>
+        <button onClick={() => setCurrentView('seo')} style={{
+          flex: 1, padding: '1rem', backgroundColor: currentView === 'seo' ? currentTheme.accent : 'transparent',
+          color: currentView === 'seo' ? currentTheme.bg : currentTheme.text,
+          border: 'none', cursor: 'pointer', fontWeight: '700', fontFamily: 'Roboto, sans-serif'
+        }}>
+          SEO SETTINGS
+        </button>
       </div>
 
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem 3rem' }}>
@@ -780,6 +788,10 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
               )}
             </div>
           </div>
+        )}
+
+        {currentView === 'seo' && (
+          <SEOSettings />
         )}
       </div>
 
