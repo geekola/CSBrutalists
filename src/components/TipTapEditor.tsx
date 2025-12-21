@@ -215,6 +215,25 @@ const TipTapEditor: React.FC<TipTapEditorProps> = ({ content, onChange, theme })
       >
         <EditorContent editor={editor} style={{ outline: 'none' }} />
       </div>
+      {editor && (
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '0.5rem',
+          backgroundColor: theme.secondary,
+          fontSize: '0.75rem',
+          color: theme.textSecondary,
+          fontFamily: 'Courier, monospace',
+        }}>
+          <span>
+            {editor.storage.characterCount?.characters() || editor.getText().length} characters
+          </span>
+          <span>
+            {editor.storage.characterCount?.words() || editor.getText().split(/\s+/).filter(w => w.length > 0).length} words
+          </span>
+        </div>
+      )}
     </div>
   );
 };

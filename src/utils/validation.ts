@@ -12,6 +12,7 @@ export interface PortfolioValidation {
 export interface ResumeValidation {
   title: string;
   content: string;
+  section: string;
 }
 
 export const validatePortfolioItem = (item: Partial<PortfolioValidation>): ValidationError[] => {
@@ -34,6 +35,10 @@ export const validatePortfolioItem = (item: Partial<PortfolioValidation>): Valid
 
 export const validateResumeItem = (item: Partial<ResumeValidation>): ValidationError[] => {
   const errors: ValidationError[] = [];
+
+  if (!item.section?.trim()) {
+    errors.push({ field: 'section', message: 'Section is required' });
+  }
 
   if (!item.title?.trim()) {
     errors.push({ field: 'title', message: 'Title is required' });

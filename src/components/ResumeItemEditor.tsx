@@ -26,11 +26,20 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
 }) => {
   const [formData, setFormData] = useState(item);
   const [errors, setErrors] = useState<ValidationError[]>([]);
+  const [isDirty, setIsDirty] = useState(false);
+  const [originalData, setOriginalData] = useState(item);
 
   useEffect(() => {
     setFormData(item);
+    setOriginalData(item);
     setErrors([]);
+    setIsDirty(false);
   }, [item, isOpen]);
+
+  useEffect(() => {
+    const hasChanges = JSON.stringify(formData) !== JSON.stringify(originalData);
+    setIsDirty(hasChanges);
+  }, [formData, originalData]);
 
   const handleSave = () => {
     const validationErrors = validateResumeItem(formData);
@@ -41,6 +50,16 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
     onSave(formData);
   };
 
+  const handleCancel = () => {
+    if (isDirty) {
+      if (confirm('You have unsaved changes. Are you sure you want to close without saving?')) {
+        onCancel();
+      }
+    } else {
+      onCancel();
+    }
+  };
+
   if (!isOpen) return null;
 
   const getErrorMessage = (field: string) => {
@@ -48,6 +67,18 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
   };
 
   const hasError = (field: string) => !!getErrorMessage(field);
+
+  const resumeSections = [
+    'Experience',
+    'Education',
+    'Skills',
+    'Certifications',
+    'Projects',
+    'Awards',
+    'Publications',
+    'Volunteer',
+    'Other'
+  ];
 
   return (
     <div
@@ -63,7 +94,7 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
         justifyContent: 'center',
         zIndex: 10000,
       }}
-      onClick={onCancel}
+      onClick={handleCancel}
     >
       <div
         style={{
@@ -85,7 +116,42 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
         <div style={{ display: 'grid', gap: '1.5rem' }}>
           <div>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '700' }}>
-              Title
+              Section <span style={{ color: '#ff6b6b' }}>*</span>
+            </label>
+            <select
+              value={formData.section || ''}
+              onChange={(e) => {
+                setFormData({ ...formData, section: e.target.value });
+                setErrors(errors.filter(e => e.field !== 'section'));
+              }}
+              style={{
+                width: '100%',
+                padding: '0.75rem',
+                backgroundColor: theme.bg,
+                border: hasError('section') ? '1px solid #ff6b6b' : `1px solid ${theme.secondary}`,
+                color: theme.text,
+                fontFamily: 'inherit',
+                boxSizing: 'border-box',
+                cursor: 'pointer',
+              }}
+            >
+              <option value="">Select a section...</option>
+              {resumeSections.map((section) => (
+                <option key={section} value={section}>
+                  {section}
+                </option>
+              ))}
+            </select>
+            {hasError('section') && (
+              <p style={{ margin: '0.25rem 0 0 0', color: '#ff6b6b', fontSize: '0.75rem' }}>
+                {getErrorMessage('section')}
+              </p>
+            )}
+          </div>
+
+          <div>
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '700' }}>
+              Title <span style={{ color: '#ff6b6b' }}>*</span>
             </label>
             <input
               type="text"
@@ -94,7 +160,7 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
                 setFormData({ ...formData, title: e.target.value });
                 setErrors(errors.filter(e => e.field !== 'title'));
               }}
-              placeholder="e.g., Experience, Education, Skills"
+              placeholder="e.g., Senior Software Engineer, Computer Science Degree"
               style={{
                 width: '100%',
                 padding: '0.75rem',
@@ -114,7 +180,7 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
 
           <div>
             <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: '700' }}>
-              Content
+              Content <span style={{ color: '#ff6b6b' }}>*</span>
             </label>
             <div style={{ border: hasError('content') ? '1px solid #ff6b6b' : 'none' }}>
               <TipTapEditor
@@ -135,7 +201,7 @@ const ResumeItemEditor: React.FC<ResumeItemEditorProps> = ({
 
           <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
             <button
-              onClick={onCancel}
+              onClick={handleCancel}
               disabled={isLoading}
               style={{
                 flex: 1,
