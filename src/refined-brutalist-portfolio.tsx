@@ -624,7 +624,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
         borderTop: `1px solid ${currentTheme.secondary}`, padding: '2rem 3rem', textAlign: 'center',
         fontSize: '0.75rem', color: currentTheme.textSecondary, fontFamily: 'Courier, monospace'
       }}>
-        © 2025 CS BRUTALISTS. ALL RIGHTS RESERVED.
+        © 2026 CS BRUTALISTS. ALL RIGHTS RESERVED.
       </footer>
     </div>
   );
