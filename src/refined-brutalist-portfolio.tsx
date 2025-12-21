@@ -177,7 +177,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
           backgroundColor: currentTheme.bg + 'BF', zIndex: 999, display: 'flex',
           flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2rem'
         }}>
-          {['HOME', 'PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
+          {['PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
             <button key={section} onClick={() => handleNavClick(section.toLowerCase())} style={{
               background: 'none', border: 'none',
               color: activeSection === section.toLowerCase() ? currentTheme.accent : currentTheme.text,
@@ -207,7 +207,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
               </div>
             </div>
               <div style={{ marginBottom: '3rem' }}>
-                {['HOME', 'PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
+                {['PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
                   <button
                     key={section}
                     onClick={() => handleNavClick(section.toLowerCase())}
