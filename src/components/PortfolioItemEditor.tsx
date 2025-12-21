@@ -707,6 +707,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
               padding: '1.5rem',
               maxWidth: '500px',
               width: '90%',
+              pointerEvents: 'auto',
             }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -736,6 +737,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
                 value={editCaption}
                 onChange={(e) => setEditCaption(e.target.value)}
                 placeholder="e.g., Project mockup on laptop screen"
+                autoFocus={true}
                 style={{
                   width: '100%',
                   padding: '0.75rem',
@@ -744,6 +746,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
                   color: theme.text,
                   fontFamily: 'inherit',
                   boxSizing: 'border-box',
+                  pointerEvents: 'auto',
                 }}
               />
               <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.7rem', color: theme.textSecondary }}>
@@ -768,6 +771,7 @@ const PortfolioItemEditor: React.FC<PortfolioItemEditorProps> = ({
                   color: theme.text,
                   fontFamily: 'inherit',
                   boxSizing: 'border-box',
+                  pointerEvents: 'auto',
                 }}
               />
               <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.7rem', color: theme.textSecondary }}>
