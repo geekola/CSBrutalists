@@ -218,7 +218,17 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
               
               <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '1rem' }}>
                 {portfolioItems.slice(0, 10).map((item, idx) => (
-                  <div key={item.id} style={{ minWidth: '250px', cursor: 'pointer', position: 'relative' }}>
+                  <div
+                    key={item.id}
+                    onClick={() => onProjectClick?.(item)}
+                    style={{ minWidth: '250px', cursor: 'pointer', position: 'relative', transition: 'transform 0.2s' }}
+                    onMouseEnter={(e) => {
+                      (e.currentTarget as HTMLDivElement).style.transform = 'translateY(-4px)';
+                    }}
+                    onMouseLeave={(e) => {
+                      (e.currentTarget as HTMLDivElement).style.transform = 'translateY(0)';
+                    }}
+                  >
                     <div style={{
                       aspectRatio: '4/3', backgroundColor: currentTheme.secondary, display: 'flex',
                       alignItems: 'center', justifyContent: 'center', fontSize: '2rem', position: 'relative', overflow: 'hidden'
@@ -230,7 +240,8 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                       )}
                       <div style={{
                         position: 'absolute', bottom: '0.5rem', left: '0.5rem',
-                        fontFamily: 'Roboto, sans-serif', fontSize: '1.5rem', fontWeight: '700'
+                        fontFamily: 'Roboto, sans-serif', fontSize: '1.5rem', fontWeight: '700',
+                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                       }}>
                         {String(idx + 1).padStart(2, '0')}
                       </div>

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import ImageLightbox from '../components/ImageLightbox';
 
 interface ProjectImage {
   id: string;
   image_data: string;
   image_name: string;
+  image_type?: string;
   order: number;
 }
 
@@ -23,13 +25,23 @@ interface PortfolioItem {
 interface ProjectDetailsProps {
   project: PortfolioItem;
   onBack: () => void;
+  onNavigate?: (direction: 'prev' | 'next') => void;
+  currentIndex?: number;
+  totalProjects?: number;
 }
 
-const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
+const ProjectDetails: React.FC<ProjectDetailsProps> = ({
+  project,
+  onBack,
+  onNavigate,
+  currentIndex = -1,
+  totalProjects = 0
+}) => {
   const [isDark, setIsDark] = useState(true);
   const [images, setImages] = useState<ProjectImage[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const theme = {
     dark: { bg: '#000000', secondary: '#2a2a2a', accent: '#FFD700', text: '#FFFFFF', textSecondary: '#a0a0a0' },
@@ -74,6 +86,21 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
     }
   };
 
+  const handleLightboxNavigate = (direction: 'prev' | 'next') => {
+    if (direction === 'prev') {
+      prevImage();
+    } else {
+      nextImage();
+    }
+  };
+
+  const openLightbox = (index?: number) => {
+    if (index !== undefined) {
+      setCurrentImageIndex(index);
+    }
+    setLightboxOpen(true);
+  };
+
   return (
     <div style={{ backgroundColor: currentTheme.bg, color: currentTheme.text, minHeight: '100vh' }}>
       <nav style={{
@@ -101,10 +128,74 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
         >
           <ArrowLeft size={16} /> BACK
         </button>
-        <div style={{ fontSize: '1.25rem', fontWeight: '700', fontFamily: 'Roboto, sans-serif' }}>
-          PROJECT DETAILS
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}>
+          <div style={{ fontSize: '1.25rem', fontWeight: '700', fontFamily: 'Roboto, sans-serif' }}>
+            PROJECT DETAILS
+          </div>
+          {totalProjects > 0 && (
+            <div style={{ fontSize: '0.75rem', color: currentTheme.textSecondary, fontFamily: 'Courier, monospace' }}>
+              {currentIndex + 1} / {totalProjects}
+            </div>
+          )}
         </div>
-        <div style={{ width: '80px' }} />
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
+          {onNavigate && totalProjects > 1 && (
+            <>
+              <button
+                onClick={() => onNavigate('prev')}
+                style={{
+                  background: 'none',
+                  border: `1px solid ${currentTheme.text}`,
+                  color: currentTheme.text,
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLButtonElement).style.backgroundColor = currentTheme.accent;
+                  (e.target as HTMLButtonElement).style.color = currentTheme.bg;
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
+                  (e.target as HTMLButtonElement).style.color = currentTheme.text;
+                }}
+                title="Previous Project"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={() => onNavigate('next')}
+                style={{
+                  background: 'none',
+                  border: `1px solid ${currentTheme.text}`,
+                  color: currentTheme.text,
+                  width: '36px',
+                  height: '36px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}
+                onMouseEnter={(e) => {
+                  (e.target as HTMLButtonElement).style.backgroundColor = currentTheme.accent;
+                  (e.target as HTMLButtonElement).style.color = currentTheme.bg;
+                }}
+                onMouseLeave={(e) => {
+                  (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
+                  (e.target as HTMLButtonElement).style.color = currentTheme.text;
+                }}
+                title="Next Project"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </>
+          )}
+        </div>
       </nav>
 
       <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '3rem' }}>
@@ -143,8 +234,12 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
               justifyContent: 'center',
               position: 'relative',
               marginBottom: '2rem',
-              overflow: 'hidden'
-            }}>
+              overflow: 'hidden',
+              cursor: 'pointer'
+            }}
+            onClick={() => openLightbox()}
+            title="Click to view fullscreen"
+            >
               <img
                 src={`data:${images[currentImageIndex].image_type};base64,${images[currentImageIndex].image_data}`}
                 alt={images[currentImageIndex].image_name}
@@ -153,7 +248,10 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
               {images.length > 1 && (
                 <>
                   <button
-                    onClick={prevImage}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      prevImage();
+                    }}
                     style={{
                       position: 'absolute',
                       left: '1rem',
@@ -174,7 +272,10 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
                     <ChevronLeft size={20} />
                   </button>
                   <button
-                    onClick={nextImage}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      nextImage();
+                    }}
                     style={{
                       position: 'absolute',
                       right: '1rem',
@@ -220,15 +321,26 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
                 {images.map((img, idx) => (
                   <div
                     key={img.id}
-                    onClick={() => setCurrentImageIndex(idx)}
+                    onClick={() => openLightbox(idx)}
                     style={{
                       aspectRatio: '4/3',
                       backgroundColor: currentTheme.secondary,
                       cursor: 'pointer',
                       border: currentImageIndex === idx ? `2px solid ${currentTheme.accent}` : `2px solid transparent`,
                       overflow: 'hidden',
-                      transition: 'border 0.2s'
+                      transition: 'all 0.2s'
                     }}
+                    onMouseEnter={(e) => {
+                      if (currentImageIndex !== idx) {
+                        (e.currentTarget as HTMLDivElement).style.border = `2px solid ${currentTheme.text}`;
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (currentImageIndex !== idx) {
+                        (e.currentTarget as HTMLDivElement).style.border = `2px solid transparent`;
+                      }
+                    }}
+                    title="Click to view fullscreen"
                   >
                     <img
                       src={`data:${img.image_type};base64,${img.image_data}`}
@@ -255,6 +367,16 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({ project, onBack }) => {
           </div>
         )}
       </div>
+
+      {lightboxOpen && images.length > 0 && (
+        <ImageLightbox
+          images={images}
+          currentIndex={currentImageIndex}
+          onClose={() => setLightboxOpen(false)}
+          onNavigate={handleLightboxNavigate}
+          isDark={isDark}
+        />
+      )}
     </div>
   );
 };
