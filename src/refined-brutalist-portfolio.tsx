@@ -104,7 +104,20 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
         borderBottom: `1px solid ${currentTheme.secondary}`, padding: '1.5rem 3rem',
         display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 1000
       }}>
-        <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto' }} />
+        <button
+          onClick={() => handleNavClick('home')}
+          style={{
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center'
+          }}
+          aria-label="Go to home"
+        >
+          <img src="/logo.png" alt="Logo" style={{ height: '40px', width: 'auto' }} />
+        </button>
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <div style={{ fontSize: '0.75rem', color: currentTheme.textSecondary, fontFamily: 'Courier, monospace' }}>
             {username}
