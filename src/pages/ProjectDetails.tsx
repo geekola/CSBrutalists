@@ -153,7 +153,24 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
           color: currentTheme.textSecondary,
           fontFamily: 'Courier, monospace'
         }}>
-          Portfolio / {project.title}
+          <button
+            onClick={onBack}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: currentTheme.textSecondary,
+              cursor: 'pointer',
+              padding: '0',
+              fontFamily: 'Courier, monospace',
+              fontSize: '0.75rem',
+              fontWeight: '400',
+              textDecoration: 'underline'
+            }}
+          >
+            Portfolio
+          </button>
+          {' / '}
+          {project.title}
         </div>
       </nav>
 
