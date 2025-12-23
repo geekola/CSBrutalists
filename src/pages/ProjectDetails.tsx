@@ -153,7 +153,7 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
           color: currentTheme.textSecondary,
           fontFamily: 'Courier, monospace'
         }}>
-          NAV CRUMBS › NAV PAGE › NAVE PAGE
+          Portfolio / {project.title}
         </div>
       </nav>
 
