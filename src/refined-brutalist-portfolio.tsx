@@ -681,21 +681,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                     >
                       <Mail size={24} />
                     </a>
-                    <a
-                      href="https://github.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: currentTheme.text,
-                        transition: 'color 0.2s',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
-                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
-                    >
-                      <Github size={24} />
-                    </a>
                   </div>
                 </div>
               </div>
