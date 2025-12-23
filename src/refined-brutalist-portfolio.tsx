@@ -608,7 +608,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                   </p>
                   <div style={{ marginBottom: '2rem' }}>
                     <p style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>
-                      <strong>Email:</strong> contact@csbrut.com
+                      <strong>Email:</strong> <a href="mailto:scottopher@gmail.com">scottopher@gmail.com</a>
                     </p>
                     <p style={{ fontSize: '0.875rem' }}>
                       <strong>Location:</strong> Los Angeles, CA
@@ -669,7 +669,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                       <Linkedin size={24} />
                     </a>
                     <a
-                      href="mailto:contact@example.com"
+                      href="mailto:scottopher@gmail.com"
                       style={{
                         color: currentTheme.text,
                         transition: 'color 0.2s',
