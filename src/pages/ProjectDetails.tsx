@@ -120,15 +120,20 @@ const ProjectDetails: React.FC<ProjectDetailsProps> = ({
             style={{
               background: 'none',
               border: 'none',
-              color: currentTheme.text,
               cursor: 'pointer',
-              fontFamily: 'Roboto, sans-serif',
-              fontSize: '1.5rem',
-              fontWeight: '900',
-              padding: '0'
+              padding: '0',
+              display: 'flex',
+              alignItems: 'center'
             }}
           >
-            LOGO
+            <img
+              src="/logo.png"
+              alt="Logo"
+              style={{
+                height: '40px',
+                width: 'auto'
+              }}
+            />
           </button>
           <button
             style={{
