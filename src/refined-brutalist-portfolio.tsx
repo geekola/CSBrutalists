@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Menu, X, Download, LogOut, Settings, Linkedin, Mail, Github } from 'lucide-react';
+import { Sun, Moon, Menu, X, Download, LogOut, Settings, Linkedin, Mail } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import { useSEOContext } from './contexts/SEOContext';
 import { updateMetaTags } from './hooks/useSEO';
@@ -555,7 +555,7 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                       <Linkedin size={24} />
                     </a>
                     <a
-                      href="mailto:contact@example.com"
+                      href="mailto:scottopher@gmail.com"
                       style={{
                         color: currentTheme.text,
                         transition: 'color 0.2s',
@@ -566,21 +566,6 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
                       onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
                     >
                       <Mail size={24} />
-                    </a>
-                    <a
-                      href="https://github.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: currentTheme.text,
-                        transition: 'color 0.2s',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.color = currentTheme.accent}
-                      onMouseLeave={(e) => e.currentTarget.style.color = currentTheme.text}
-                    >
-                      <Github size={24} />
                     </a>
                   </div>
                 </div>
