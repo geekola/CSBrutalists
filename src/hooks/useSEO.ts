@@ -50,10 +50,21 @@ export const useSEO = () => {
         .select('*')
         .maybeSingle();
 
-      if (error) throw error;
-      if (data) setSeoSettings(data);
+      if (error) {
+        console.error('Error loading SEO settings:', error);
+        throw error;
+      }
+
+      if (data) {
+        setSeoSettings(data);
+      } else {
+        // No settings found - this is expected on first load
+        console.log('No SEO settings found in database yet');
+        setSeoSettings(null);
+      }
     } catch (error) {
-      console.error('Error loading SEO settings:', error);
+      console.error('Failed to load SEO settings:', error);
+      setSeoSettings(null);
     } finally {
       setLoading(false);
     }
@@ -77,12 +88,29 @@ export const useSEO = () => {
 
   const updateSEOSettings = async (settings: Partial<SEOSettings>) => {
     try {
-      const { error } = await supabase
-        .from('seo_settings')
-        .update(settings)
-        .eq('id', seoSettings?.id);
+      // If we have an existing ID, update that specific record
+      if (seoSettings?.id) {
+        const { error } = await supabase
+          .from('seo_settings')
+          .update(settings)
+          .eq('id', seoSettings.id);
 
-      if (error) throw error;
+        if (error) {
+          console.error('Update error:', error);
+          throw error;
+        }
+      } else {
+        // If no record exists, insert a new one
+        const { error } = await supabase
+          .from('seo_settings')
+          .insert([settings]);
+
+        if (error) {
+          console.error('Insert error:', error);
+          throw error;
+        }
+      }
+
       await loadSEOSettings();
       return true;
     } catch (error) {

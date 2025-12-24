@@ -47,16 +47,18 @@ const SEOSettings: React.FC = () => {
   const handleSave = async () => {
     setSaving(true);
     try {
+      console.log('Attempting to save SEO settings:', formData);
       const success = await updateSEOSettings(formData);
       if (success) {
         addToast('SEO settings updated successfully', 'success');
         await reloadSettings();
       } else {
-        addToast('Failed to update SEO settings', 'error');
+        console.error('Update returned false');
+        addToast('Failed to update SEO settings. Check console for details.', 'error');
       }
     } catch (error) {
       console.error('Error saving SEO settings:', error);
-      addToast('Error updating SEO settings', 'error');
+      addToast(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`, 'error');
     } finally {
       setSaving(false);
     }
