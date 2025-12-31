@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const Login: React.FC = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -13,9 +13,9 @@ const Login: React.FC = () => {
     setError('');
     setIsSubmitting(true);
 
-    const success = await login(username, password);
+    const success = await login(email, password);
     if (!success) {
-      setError('Invalid username or password');
+      setError('Invalid email or password');
     }
 
     setIsSubmitting(false);
@@ -67,12 +67,12 @@ const Login: React.FC = () => {
                 color: '#a0a0a0',
               }}
             >
-              USERNAME
+              EMAIL
             </label>
             <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               disabled={isSubmitting}
               style={{
                 width: '100%',
@@ -86,7 +86,7 @@ const Login: React.FC = () => {
                 cursor: isSubmitting ? 'not-allowed' : 'text',
                 opacity: isSubmitting ? 0.6 : 1,
               }}
-              autoComplete="username"
+              autoComplete="email"
               autoFocus
             />
           </div>

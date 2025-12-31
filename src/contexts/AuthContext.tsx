@@ -1,11 +1,12 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '../lib/supabase';
 
 interface AuthContextType {
   isAuthenticated: boolean;
   username: string | null;
   role: string | null;
   isAdmin: boolean;
-  login: (username: string, password: string) => Promise<boolean>;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -19,58 +20,71 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem('auth');
-    if (storedAuth) {
-      try {
-        const { username: storedUsername, role: storedRole } = JSON.parse(storedAuth);
-        setUsername(storedUsername);
-        setRole(storedRole);
+    const initAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (session?.user) {
         setIsAuthenticated(true);
-      } catch {
-        localStorage.removeItem('auth');
+        setUsername(session.user.email || null);
+        setRole(session.user.app_metadata?.role || null);
       }
-    }
-    setIsLoading(false);
+
+      setIsLoading(false);
+    };
+
+    initAuth();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setIsAuthenticated(true);
+        setUsername(session.user.email || null);
+        setRole(session.user.app_metadata?.role || null);
+      } else {
+        setIsAuthenticated(false);
+        setUsername(null);
+        setRole(null);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const login = async (username: string, password: string): Promise<boolean> => {
+  const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/authenticate`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-          },
-          body: JSON.stringify({ username, password }),
-        }
-      );
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success) {
-          setIsAuthenticated(true);
-          setUsername(username);
-          setRole(data.role);
-          localStorage.setItem('auth', JSON.stringify({ username, role: data.role }));
-          return true;
-        }
+      if (error) {
+        console.error('Login error:', error);
+        return false;
       }
+
+      if (data.session?.user) {
+        setIsAuthenticated(true);
+        setUsername(data.session.user.email || null);
+        setRole(data.session.user.app_metadata?.role || null);
+        return true;
+      }
+
       return false;
-    } catch {
+    } catch (error) {
+      console.error('Login exception:', error);
       return false;
     } finally {
       setIsLoading(false);
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
     setUsername(null);
     setRole(null);
-    localStorage.removeItem('auth');
   };
 
   const isAdmin = role === 'admin';
