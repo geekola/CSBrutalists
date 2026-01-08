@@ -1,25 +1,39 @@
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
-interface LoginProps {
-  onForgotPassword?: () => void;
+interface ResetPasswordProps {
+  onSuccess: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
-  const [email, setEmail] = useState('');
+const ResetPassword: React.FC<ResetPasswordProps> = ({ onSuccess }) => {
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login } = useAuth();
+  const { resetPassword } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     setIsSubmitting(true);
 
-    const success = await login(email, password);
-    if (!success) {
-      setError('Invalid email or password');
+    const result = await resetPassword(password);
+
+    if (result.success) {
+      onSuccess();
+    } else {
+      setError(result.error || 'Failed to reset password');
     }
 
     setIsSubmitting(false);
@@ -51,12 +65,24 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
           style={{
             fontSize: '1.5rem',
             fontWeight: '900',
-            marginBottom: '3rem',
+            marginBottom: '1rem',
             textAlign: 'center',
             letterSpacing: '0.05em',
           }}
         >
-          PORTFOLIO
+          SET NEW PASSWORD
+        </div>
+
+        <div
+          style={{
+            marginBottom: '2rem',
+            fontSize: '0.875rem',
+            color: '#a0a0a0',
+            textAlign: 'center',
+            lineHeight: '1.6',
+          }}
+        >
+          Enter your new password below.
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -71,13 +97,15 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
                 color: '#a0a0a0',
               }}
             >
-              EMAIL
+              NEW PASSWORD
             </label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               disabled={isSubmitting}
+              required
+              minLength={6}
               style={{
                 width: '100%',
                 padding: '0.75rem',
@@ -90,7 +118,7 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
                 cursor: isSubmitting ? 'not-allowed' : 'text',
                 opacity: isSubmitting ? 0.6 : 1,
               }}
-              autoComplete="email"
+              autoComplete="new-password"
               autoFocus
             />
           </div>
@@ -106,13 +134,15 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
                 color: '#a0a0a0',
               }}
             >
-              PASSWORD
+              CONFIRM PASSWORD
             </label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               disabled={isSubmitting}
+              required
+              minLength={6}
               style={{
                 width: '100%',
                 padding: '0.75rem',
@@ -125,7 +155,7 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
                 cursor: isSubmitting ? 'not-allowed' : 'text',
                 opacity: isSubmitting ? 0.6 : 1,
               }}
-              autoComplete="current-password"
+              autoComplete="new-password"
             />
           </div>
 
@@ -169,40 +199,9 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
               if (!isSubmitting) (e.target as HTMLButtonElement).style.opacity = '1';
             }}
           >
-            {isSubmitting ? 'LOGGING IN...' : 'LOGIN'}
+            {isSubmitting ? 'RESETTING...' : 'RESET PASSWORD'}
           </button>
         </form>
-
-        {onForgotPassword && (
-          <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-            <button
-              onClick={onForgotPassword}
-              disabled={isSubmitting}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#FFD700',
-                fontSize: '0.875rem',
-                fontWeight: '700',
-                letterSpacing: '0.05em',
-                cursor: isSubmitting ? 'not-allowed' : 'pointer',
-                textDecoration: 'none',
-                padding: 0,
-                fontFamily: 'inherit',
-                opacity: isSubmitting ? 0.5 : 1,
-                transition: 'opacity 0.2s',
-              }}
-              onMouseEnter={(e) => {
-                if (!isSubmitting) (e.target as HTMLButtonElement).style.opacity = '0.8';
-              }}
-              onMouseLeave={(e) => {
-                if (!isSubmitting) (e.target as HTMLButtonElement).style.opacity = '1';
-              }}
-            >
-              Forgot Password?
-            </button>
-          </div>
-        )}
 
         <div
           style={{
@@ -214,11 +213,11 @@ const Login: React.FC<LoginProps> = ({ onForgotPassword }) => {
             lineHeight: '1.6',
           }}
         >
-          Enter your credentials to access the portfolio.
+          Your password must be at least 6 characters long.
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default ResetPassword;

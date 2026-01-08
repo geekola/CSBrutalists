@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import Portfolio from './refined-brutalist-portfolio';
 import ProjectDetails from './pages/ProjectDetails';
 import Admin from './pages/Admin';
@@ -26,6 +28,14 @@ function App() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortfolioItem | null>(null);
   const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
+  const [authView, setAuthView] = useState<'login' | 'forgot-password' | 'reset-password'>('login');
+
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash.includes('type=recovery') || hash.includes('reset-password')) {
+      setAuthView('reset-password');
+    }
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -82,7 +92,22 @@ function App() {
   }
 
   if (!isAuthenticated) {
-    return <Login />;
+    if (authView === 'forgot-password') {
+      return <ForgotPassword onBack={() => setAuthView('login')} />;
+    }
+
+    if (authView === 'reset-password') {
+      return (
+        <ResetPassword
+          onSuccess={() => {
+            setAuthView('login');
+            window.location.hash = '';
+          }}
+        />
+      );
+    }
+
+    return <Login onForgotPassword={() => setAuthView('forgot-password')} />;
   }
 
   const getCurrentProjectIndex = () => {
