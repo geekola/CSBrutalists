@@ -21,8 +21,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const DEVELOPMENT_MODE = true;
+
   useEffect(() => {
     const initAuth = async () => {
+      if (DEVELOPMENT_MODE) {
+        setIsAuthenticated(true);
+        setUsername('admin@example.com');
+        setRole('admin');
+        setIsLoading(false);
+        return;
+      }
+
       const { data: { session } } = await supabase.auth.getSession();
 
       if (session?.user) {
@@ -37,6 +47,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     initAuth();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (DEVELOPMENT_MODE) return;
+
       if (session?.user) {
         setIsAuthenticated(true);
         setUsername(session.user.email || null);
@@ -56,6 +68,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
+      if (DEVELOPMENT_MODE) {
+        setIsAuthenticated(true);
+        setUsername(email);
+        setRole('admin');
+        return true;
+      }
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -83,7 +102,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
+    if (!DEVELOPMENT_MODE) {
+      await supabase.auth.signOut();
+    }
     setIsAuthenticated(false);
     setUsername(null);
     setRole(null);
