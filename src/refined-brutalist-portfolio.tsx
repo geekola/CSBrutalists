@@ -218,10 +218,31 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
           title="Logout">
             <LogOut size={18} />
           </button>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{
-            background: 'none', border: 'none', color: currentTheme.text, cursor: 'pointer', padding: 0
-          }}>
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              background: 'none',
+              border: `1px solid ${currentTheme.text}`,
+              borderRadius: '4px',
+              color: currentTheme.text,
+              cursor: 'pointer',
+              padding: '6px 8px',
+              display: isMobile ? 'flex' : 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = currentTheme.accent;
+              (e.target as HTMLButtonElement).style.color = currentTheme.bg;
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
+              (e.target as HTMLButtonElement).style.color = currentTheme.text;
+            }}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </nav>
