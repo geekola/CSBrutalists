@@ -278,21 +278,36 @@ const Admin: React.FC<AdminProps> = ({ onBack }) => {
   };
 
   const moveItem = async (items: any[], id: string, direction: 'up' | 'down') => {
-    const index = items.findIndex(item => item.id === id);
-    if (direction === 'up' && index > 0) {
-      const temp = items[index].order;
-      items[index].order = items[index - 1].order;
-      items[index - 1].order = temp;
-    } else if (direction === 'down' && index < items.length - 1) {
-      const temp = items[index].order;
-      items[index].order = items[index + 1].order;
-      items[index + 1].order = temp;
-    }
+    setOperationLoading(true);
+    try {
+      const index = items.findIndex(item => item.id === id);
+      let swapIndex = -1;
 
-    if (currentView === 'portfolio') {
-      await updatePortfolioItem(id, { order: items[index].order });
-    } else {
-      await updateResumeContent(id, { order: items[index].order });
+      if (direction === 'up' && index > 0) {
+        swapIndex = index - 1;
+      } else if (direction === 'down' && index < items.length - 1) {
+        swapIndex = index + 1;
+      }
+
+      if (swapIndex === -1) return;
+
+      const tempOrder = items[index].order;
+      const swappedId = items[swapIndex].id;
+
+      if (currentView === 'portfolio') {
+        await updatePortfolioItem(id, { order: items[swapIndex].order });
+        await updatePortfolioItem(swappedId, { order: tempOrder });
+      } else {
+        await updateResumeContent(id, { order: items[swapIndex].order });
+        await updateResumeContent(swappedId, { order: tempOrder });
+      }
+
+      await loadData();
+    } catch (error) {
+      console.error('Error moving item:', error);
+      addToast('Failed to move item', 'error');
+    } finally {
+      setOperationLoading(false);
     }
   };
 
