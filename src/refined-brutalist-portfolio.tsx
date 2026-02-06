@@ -62,6 +62,19 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
   }, []);
 
   useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    if (mobileMenuOpen) {
+      window.addEventListener('keydown', handleEscapeKey);
+      return () => window.removeEventListener('keydown', handleEscapeKey);
+    }
+  }, [mobileMenuOpen]);
+
+  useEffect(() => {
     const loadData = async () => {
       try {
         const [portfolioRes, resumeRes] = await Promise.all([
@@ -248,18 +261,28 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
       </nav>
 
       {mobileMenuOpen && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: currentTheme.bg + 'BF', zIndex: 999, display: 'flex',
-          flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2rem'
-        }}>
+        <div
+          onClick={() => setMobileMenuOpen(false)}
+          style={{
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: currentTheme.bg + 'BF', zIndex: 999, display: 'flex',
+            flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2rem'
+          }}
+        >
           {['PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
-            <button key={section} onClick={() => handleNavClick(section.toLowerCase())} style={{
-              background: 'none', border: 'none',
-              color: activeSection === section.toLowerCase() ? currentTheme.accent : currentTheme.text,
-              fontSize: isMobile ? '2rem' : '3rem', fontWeight: '900', cursor: 'pointer',
-              fontFamily: 'Roboto, sans-serif'
-            }}>
+            <button
+              key={section}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleNavClick(section.toLowerCase());
+              }}
+              style={{
+                background: 'none', border: 'none',
+                color: activeSection === section.toLowerCase() ? currentTheme.accent : currentTheme.text,
+                fontSize: isMobile ? '2rem' : '3rem', fontWeight: '900', cursor: 'pointer',
+                fontFamily: 'Roboto, sans-serif'
+              }}
+            >
               {section}
             </button>
           ))}
