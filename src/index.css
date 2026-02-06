@@ -79,11 +79,3 @@
 .tiptap-link {
   text-decoration: underline;
 }
-
-.mobile-menu-button {
-  transition: all 0.2s ease;
-}
-
-.mobile-menu-button:hover {
-  opacity: 0.8;
-}

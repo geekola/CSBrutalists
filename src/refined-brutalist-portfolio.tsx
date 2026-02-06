@@ -231,65 +231,55 @@ const Portfolio: React.FC<PortfolioProps> = ({ onAdminClick, onProjectClick }) =
           title="Logout">
             <LogOut size={18} />
           </button>
-          {isMobile && (
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(prev => !prev)}
-              className="mobile-menu-button"
-              style={{
-                background: 'none',
-                border: `1px solid ${currentTheme.text}`,
-                borderRadius: '4px',
-                color: currentTheme.text,
-                cursor: 'pointer',
-                padding: '6px 8px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              aria-label="Toggle mobile menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          )}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              background: 'none',
+              border: `1px solid ${currentTheme.text}`,
+              borderRadius: '4px',
+              color: currentTheme.text,
+              cursor: 'pointer',
+              padding: '6px 8px',
+              display: isMobile ? 'flex' : 'none',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = currentTheme.accent;
+              (e.target as HTMLButtonElement).style.color = currentTheme.bg;
+            }}
+            onMouseLeave={(e) => {
+              (e.target as HTMLButtonElement).style.backgroundColor = 'transparent';
+              (e.target as HTMLButtonElement).style.color = currentTheme.text;
+            }}
+            aria-label="Toggle mobile menu"
+          >
+            {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
       </nav>
 
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
-          role="presentation"
           style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: currentTheme.bg + 'BF',
-            zIndex: 999,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: '2rem'
+            position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: currentTheme.bg + 'BF', zIndex: 999, display: 'flex',
+            flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: '2rem'
           }}
         >
           {['PORTFOLIO', 'RESUME', 'ABOUT', 'CONTACT'].map((section) => (
             <button
               key={section}
-              type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 handleNavClick(section.toLowerCase());
               }}
               style={{
-                background: 'none',
-                border: 'none',
+                background: 'none', border: 'none',
                 color: activeSection === section.toLowerCase() ? currentTheme.accent : currentTheme.text,
-                fontSize: isMobile ? '2rem' : '3rem',
-                fontWeight: '900',
-                cursor: 'pointer',
+                fontSize: isMobile ? '2rem' : '3rem', fontWeight: '900', cursor: 'pointer',
                 fontFamily: 'Roboto, sans-serif'
               }}
             >
