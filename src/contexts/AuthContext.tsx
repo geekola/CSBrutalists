@@ -21,7 +21,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [role, setRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  const DEVELOPMENT_MODE = true;
+  const DEVELOPMENT_MODE = false;
 
   useEffect(() => {
     const initAuth = async () => {
